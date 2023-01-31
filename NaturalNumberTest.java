@@ -135,4 +135,23 @@ public abstract class NaturalNumberTest {
         NaturalNumber nExpected = this.constructorRef(5);
         assertEquals(n, nExpected);
     }
+    /*
+     * Tests isZero when Natural Number is zero
+     */
+    @Test
+    public final void testIsZero() {
+        NaturalNumber n = this.constructorTest(0);
+        boolean isZero = n.isZero();
+        assertEquals(isZero, true);
+    }
+    
+    /*
+     * Tests isZero when Natural Number is not zero
+     */
+    @Test
+    public final void testIsZero1() {
+        NaturalNumber n = this.constructorTest(734);
+        boolean isZero = n.isZero();
+        assertEquals(isZero, false);
+    }
 }
