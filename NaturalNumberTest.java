@@ -1,3 +1,7 @@
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
 import components.naturalnumber.NaturalNumber;
 
 /**
@@ -99,33 +103,33 @@ public abstract class NaturalNumberTest {
 
     // TODO - add test cases for four constructors, multiplyBy10, divideBy10, isZero
     /*
-     * Tests standard constructor 
+     * Tests standard constructor
      */
     @Test
     public final void testConstructor() {
         NaturalNumber n = this.constructorTest();
         NaturalNumber nExpected = this.constructorRef();
-        assertEquals(n, nExpected);
+        assertEquals(nExpected, n);
     }
-    
+
     /*
      * Tests integer constructor
      */
     @Test
     public final void testConstructorInt() {
         NaturalNumber n = this.constructorTest(5);
-        assertEquals(5, n.toInt());
+        assertEquals(n.toInt(), 5);
     }
-    
+
     /*
      * Tests string constructor
      */
     @Test
     public final void testConstructorString() {
         NaturalNumber n = this.constructorTest("n");
-        assertEquals("n", n.toString());
+        assertEquals(n.toString(), "n");
     }
-    
+
     /*
      * Tests Natural Number constructor
      */
@@ -133,48 +137,51 @@ public abstract class NaturalNumberTest {
     public final void testConstructorNN() {
         NaturalNumber n = this.constructorTest(5);
         NaturalNumber nExpected = this.constructorRef(5);
-        assertEquals(n, nExpected);
+        assertEquals(nExpected, n);
     }
+
     /*
      * Tests isZero when Natural Number is zero
      */
     @Test
     public final void testIsZero() {
-        NaturalNumber n = this.constructorTest(0);
+        NaturalNumber n = this.constructorTest();
         boolean isZero = n.isZero();
-        assertEquals(isZero, true);
+        assertEquals(true, isZero);
     }
-    
+
     /*
      * Tests isZero when Natural Number is not zero
      */
     @Test
     public final void testIsZero1() {
-        NaturalNumber n = this.constructorTest(734);
+        NaturalNumber n = this.constructorTest("734");
         boolean isZero = n.isZero();
-        assertEquals(isZero, false);
+        assertEquals(false, isZero);
     }
-        /*
-    * test Boundary case lower end boundary
-    */
+
+    /*
+     * test Boundary case lower end boundary
+     */
     @Test
     public final void multiplyBy10Test1() {
         /*
          * Set up variables
          */
-        NaturalNumber s = this.constructorTest(0);
-        NaturalNumber sExpected = this.constructorRef(0);
+        NaturalNumber s = this.constructorTest("");
+        NaturalNumber sExpected = this.constructorRef("");
         /*
          * Call method under test
          */
 
-        s.multiplyBy10(0);;
+        s.multiplyBy10(0);
+
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(0, 0);
-}
+    }
+
     /*
      * test Boundary case higher end boundary
      */
@@ -183,41 +190,43 @@ public abstract class NaturalNumberTest {
         /*
          * Set up variables
          */
-        NaturalNumber s = this.constructorTest(2147483647);
+        NaturalNumber s = this.constructorTest("214748364");
         //2147483647
-        NaturalNumber sExpected = this.constructorRef();
+        NaturalNumber sExpected = this.constructorRef("2147483647");
         /*
          * Call method under test
          */
 
-        s.multiplyBy10(0);;
+        s.multiplyBy10(7);
+
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals("", 0);
-}
+    }
+
     /*
-     * testing Routine case 
+     * testing Routine case
      */
     @Test
     public final void multiplyBy10Test3() {
         /*
          * Set up variables
          */
-        NaturalNumber s = this.constructorTest(5);
-        NaturalNumber sExpected = this.constructorRef(50);
+        NaturalNumber s = this.constructorTest("5");
+        NaturalNumber sExpected = this.constructorRef("50");
         /*
          * Call method under test
          */
 
-        s.multiplyBy10(50);;
+        s.multiplyBy10(0);
+
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(5, 50);
-}
+    }
+
     /*
      * Testing challenge case
      */
@@ -226,19 +235,20 @@ public abstract class NaturalNumberTest {
         /*
          * Set up variables
          */
-        NaturalNumber s = this.constructorTest(115);
-        NaturalNumber sExpected = this.constructorRef(1150);
+        NaturalNumber s = this.constructorTest("115");
+        NaturalNumber sExpected = this.constructorRef("1158");
         /*
          * Call method under test
          */
 
-        s.multiplyBy10(1150);;
+        s.multiplyBy10(8);
+
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(115, 1150);
-}
+    }
+
     /*
      * testing routine case
      */
@@ -253,13 +263,14 @@ public abstract class NaturalNumberTest {
          * Call method under test
          */
 
-        s.divideBy10();;
+        s.divideBy10();
+
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(50, 5);
-}
+    }
+
     /*
      * test Boundary case Higher end boundary
      */
@@ -274,13 +285,14 @@ public abstract class NaturalNumberTest {
          * Call method under test
          */
 
-        s.divideBy10();;
+        s.divideBy10();
+
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(2147483647, 214748364);
-}
+    }
+
     /*
      * testing challenge case
      */
@@ -295,13 +307,14 @@ public abstract class NaturalNumberTest {
          * Call method under test
          */
 
-        s.divideBy10();;
+        s.divideBy10();
+
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(7, 0);
-}
+    }
+
     /*
      * test Boundary case lower end boundary
      */
@@ -310,19 +323,20 @@ public abstract class NaturalNumberTest {
         /*
          * Set up variables
          */
-        NaturalNumber s = this.constructorTest(0);
-        NaturalNumber sExpected = this.constructorRef(0);
+        NaturalNumber s = this.constructorTest("");
+        NaturalNumber sExpected = this.constructorRef("");
         /*
          * Call method under test
          */
 
-        s.divideBy10();;
+        s.divideBy10();
+
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(0, 0);
-}
+    }
+
     /*
      * test routine case of the remainder
      */
@@ -331,20 +345,20 @@ public abstract class NaturalNumberTest {
         /*
          * Set up variables
          */
-        NaturalNumber s = this.constructorTest(5);
-        NaturalNumber sExpected = this.constructorRef(0);
-       
+        NaturalNumber s = this.constructorTest("5");
+
         /*
          * Call method under test
          */
-        
-        int rem = s.divideBy10();;
+
+        int rem = s.divideBy10();
+
         /*
          * Assert that values of variables match expectations
          */
-        assertEquals(sExpected, s);
         assertEquals(rem, 5);
-}
+    }
+
     /*
      * test boundary case of the remainder
      */
@@ -353,18 +367,19 @@ public abstract class NaturalNumberTest {
         /*
          * Set up variables
          */
-        NaturalNumber s = this.constructorTest(20);
-        NaturalNumber sExpected = this.constructorRef(2);
-       
+        NaturalNumber s = this.constructorTest("20");
+        NaturalNumber sExpected = this.constructorRef("2");
+
         /*
          * Call method under test
          */
-        
-        int rem = s.divideBy10();;
+
+        int rem = s.divideBy10();
+
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(rem, 2);
+        assertEquals(rem, "2");
     }
 }
