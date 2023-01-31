@@ -14,7 +14,7 @@ import components.naturalnumber.NaturalNumberSecondary;
  *         else the decimal number whose ordinary depiction is $this.rep]
  * </pre>
  *
- * @author Put your name here
+ * @author Majed and Adithya
  *
  */
 public class NaturalNumber3 extends NaturalNumberSecondary {
@@ -33,8 +33,9 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
      */
     private void createNewRep() {
 
-        // TODO - fill in body
+        String newRep = this.rep;
 
+        // TODO - fill in body
     }
 
     /*
@@ -46,6 +47,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
      */
     public NaturalNumber3() {
 
+        this.createNewRep();
         // TODO - fill in body
 
     }
@@ -59,6 +61,8 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     public NaturalNumber3(int i) {
         assert i >= 0 : "Violation of: i >= 0";
 
+        this.createNewRep();
+        this.rep = Integer.toString(i);
         // TODO - fill in body
 
     }
@@ -74,6 +78,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         assert s.matches("0|[1-9]\\d*") : ""
                 + "Violation of: there exists n: NATURAL (s = TO_STRING(n))";
 
+        this.rep = s;
         // TODO - fill in body
 
     }
@@ -87,6 +92,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     public NaturalNumber3(NaturalNumber n) {
         assert n != null : "Violation of: n is not null";
 
+        this.rep = n.toString();
         // TODO - fill in body
 
     }
@@ -134,6 +140,9 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         assert 0 <= k : "Violation of: 0 <= k";
         assert k < RADIX : "Violation of: k < 10";
 
+        if (this.rep.length() > 0 || k > 0) {
+            this.rep = this.rep + Integer.toString(k);
+        }
         // TODO - fill in body
 
     }
@@ -141,10 +150,11 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     @Override
     public final int divideBy10() {
 
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return 0;
+       
+        if (this.rep.length() > 0) {
+            this.rep = this.rep.substring(0, this.rep.length() - 1);    
+        }
+        return this.rep.charAt(this.rep.length() - 1);
     }
 
     @Override
@@ -153,7 +163,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         // TODO - fill in body
 
         // This line added just to make the component compilable.
-        return false;
+        return this.rep.length() == 0;
     }
 
 }
