@@ -33,7 +33,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
      */
     private void createNewRep() {
 
-        String newRep = this.rep;
+        this.rep = "";
 
         // TODO - fill in body
     }
@@ -61,8 +61,11 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     public NaturalNumber3(int i) {
         assert i >= 0 : "Violation of: i >= 0";
 
-        this.createNewRep();
-        this.rep = Integer.toString(i);
+        if (i == 0) {
+            this.rep = "";
+        } else {
+            this.rep = Integer.toString(i);
+        }
         // TODO - fill in body
 
     }
@@ -140,8 +143,10 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         assert 0 <= k : "Violation of: 0 <= k";
         assert k < RADIX : "Violation of: k < 10";
 
-        if (this.rep.length() > 0 || k > 0) {
-            this.rep = this.rep + Integer.toString(k);
+        if (this.rep.length() > 0) {
+            this.rep = this.rep.concat(Integer.toString(k));
+        } else {
+            this.rep = "";
         }
         // TODO - fill in body
 
@@ -150,11 +155,13 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     @Override
     public final int divideBy10() {
 
-       
+        int x = this.rep.charAt(this.rep.length() - 1);
         if (this.rep.length() > 0) {
-            this.rep = this.rep.substring(0, this.rep.length() - 1);    
+            this.rep = this.rep.substring(0, this.rep.length() - 1);
+        } else {
+            this.rep = "";
         }
-        return this.rep.charAt(this.rep.length() - 1);
+        return x;
     }
 
     @Override
@@ -163,7 +170,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         // TODO - fill in body
 
         // This line added just to make the component compilable.
-        return this.rep.length() == 0;
+        return this.rep.equals("");
     }
 
 }
