@@ -154,4 +154,217 @@ public abstract class NaturalNumberTest {
         boolean isZero = n.isZero();
         assertEquals(isZero, false);
     }
+        /*
+    * test Boundary case lower end boundary
+    */
+    @Test
+    public final void multiplyBy10Test1() {
+        /*
+         * Set up variables
+         */
+        NaturalNumber s = this.constructorTest(0);
+        NaturalNumber sExpected = this.constructorRef(0);
+        /*
+         * Call method under test
+         */
+
+        s.multiplyBy10(0);;
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(0, 0);
+}
+    /*
+     * test Boundary case higher end boundary
+     */
+    @Test
+    public final void multiplyBy10Test2() {
+        /*
+         * Set up variables
+         */
+        NaturalNumber s = this.constructorTest(2147483647);
+        //2147483647
+        NaturalNumber sExpected = this.constructorRef();
+        /*
+         * Call method under test
+         */
+
+        s.multiplyBy10(0);;
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals("", 0);
+}
+    /*
+     * testing Routine case 
+     */
+    @Test
+    public final void multiplyBy10Test3() {
+        /*
+         * Set up variables
+         */
+        NaturalNumber s = this.constructorTest(5);
+        NaturalNumber sExpected = this.constructorRef(50);
+        /*
+         * Call method under test
+         */
+
+        s.multiplyBy10(50);;
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(5, 50);
+}
+    /*
+     * Testing challenge case
+     */
+    @Test
+    public final void multiplyBy10Test4() {
+        /*
+         * Set up variables
+         */
+        NaturalNumber s = this.constructorTest(115);
+        NaturalNumber sExpected = this.constructorRef(1150);
+        /*
+         * Call method under test
+         */
+
+        s.multiplyBy10(1150);;
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(115, 1150);
+}
+    /*
+     * testing routine case
+     */
+    @Test
+    public final void divideBy10Test1() {
+        /*
+         * Set up variables
+         */
+        NaturalNumber s = this.constructorTest(50);
+        NaturalNumber sExpected = this.constructorRef(5);
+        /*
+         * Call method under test
+         */
+
+        s.divideBy10();;
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(50, 5);
+}
+    /*
+     * test Boundary case Higher end boundary
+     */
+    @Test
+    public final void divideBy10Test2() {
+        /*
+         * Set up variables
+         */
+        NaturalNumber s = this.constructorTest(2147483647);
+        NaturalNumber sExpected = this.constructorRef(214748364);
+        /*
+         * Call method under test
+         */
+
+        s.divideBy10();;
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(2147483647, 214748364);
+}
+    /*
+     * testing challenge case
+     */
+    @Test
+    public final void divideBy10Test3() {
+        /*
+         * Set up variables
+         */
+        NaturalNumber s = this.constructorTest(7);
+        NaturalNumber sExpected = this.constructorRef(0);
+        /*
+         * Call method under test
+         */
+
+        s.divideBy10();;
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(7, 0);
+}
+    /*
+     * test Boundary case lower end boundary
+     */
+    @Test
+    public final void divideBy10Test4() {
+        /*
+         * Set up variables
+         */
+        NaturalNumber s = this.constructorTest(0);
+        NaturalNumber sExpected = this.constructorRef(0);
+        /*
+         * Call method under test
+         */
+
+        s.divideBy10();;
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(0, 0);
+}
+    /*
+     * test routine case of the remainder
+     */
+    @Test
+    public final void divideBy10TestRem1() {
+        /*
+         * Set up variables
+         */
+        NaturalNumber s = this.constructorTest(5);
+        NaturalNumber sExpected = this.constructorRef(0);
+       
+        /*
+         * Call method under test
+         */
+        
+        int rem = s.divideBy10();;
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(rem, 5);
+}
+    /*
+     * test boundary case of the remainder
+     */
+    @Test
+    public final void divideBy10TestRem2() {
+        /*
+         * Set up variables
+         */
+        NaturalNumber s = this.constructorTest(20);
+        NaturalNumber sExpected = this.constructorRef(2);
+       
+        /*
+         * Call method under test
+         */
+        
+        int rem = s.divideBy10();;
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(rem, 2);
+    }
 }
