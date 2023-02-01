@@ -8,7 +8,7 @@ import components.naturalnumber.NaturalNumber;
  * JUnit test fixture for {@code NaturalNumber}'s constructors and kernel
  * methods.
  *
- * @author Put your name here
+ * @author Majed and Adithya
  *
  */
 public abstract class NaturalNumberTest {
