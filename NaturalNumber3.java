@@ -61,6 +61,8 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     public NaturalNumber3(int i) {
         assert i >= 0 : "Violation of: i >= 0";
 
+        this.createNewRep();
+
         if (i == 0) {
             this.rep = "";
         } else {
@@ -81,6 +83,8 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         assert s.matches("0|[1-9]\\d*") : ""
                 + "Violation of: there exists n: NATURAL (s = TO_STRING(n))";
 
+        this.createNewRep();
+
         this.rep = s;
         // TODO - fill in body
 
@@ -94,6 +98,8 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
      */
     public NaturalNumber3(NaturalNumber n) {
         assert n != null : "Violation of: n is not null";
+
+        this.createNewRep();
 
         this.rep = n.toString();
         // TODO - fill in body
@@ -143,11 +149,8 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         assert 0 <= k : "Violation of: 0 <= k";
         assert k < RADIX : "Violation of: k < 10";
 
-        if (this.rep.length() > 0) {
-            this.rep = this.rep.concat(Integer.toString(k));
-        } else {
-            this.rep = "";
-        }
+        this.rep = this.rep.concat(Integer.toString(k));
+
         // TODO - fill in body
 
     }
@@ -155,13 +158,15 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     @Override
     public final int divideBy10() {
 
-        int x = this.rep.charAt(this.rep.length() - 1);
-        if (this.rep.length() > 0) {
-            this.rep = this.rep.substring(0, this.rep.length() - 1);
+        String temp = "";
+        String x = this.rep.substring(this.rep.length() - 1);
+        if (!this.rep.isEmpty()) {
+            temp = this.rep.substring(0, this.rep.length() - 1);
         } else {
             this.rep = "";
         }
-        return x;
+        this.rep = temp;
+        return Integer.parseInt(x);
     }
 
     @Override
@@ -170,7 +175,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         // TODO - fill in body
 
         // This line added just to make the component compilable.
-        return this.rep.equals("");
+        return this.rep.isEmpty();
     }
 
 }
