@@ -323,8 +323,8 @@ public abstract class NaturalNumberTest {
         /*
          * Set up variables
          */
-        NaturalNumber s = this.constructorTest("");
-        NaturalNumber sExpected = this.constructorRef("");
+        NaturalNumber s = this.constructorTest("0");
+        NaturalNumber sExpected = this.constructorRef("0");
         /*
          * Call method under test
          */
