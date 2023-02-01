@@ -412,7 +412,97 @@ public abstract class NaturalNumberTest {
          */
         assertEquals(sExpected, s);
     }
+ /**
+     * test routine case.
+     */
+    @Test
+    public final void divideBy10Test5() {
+        /*
+         * Set up variables
+         */
+        final int seventysix = 76;
+        NaturalNumber s = this.constructorTest(76);
+        NaturalNumber sExpected = this.constructorRef("7");
+        /*
+         * Call method under test
+         */
 
+        int rem = s.divideBy10();
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(rem, 6);
+    }
+
+    /**
+     * test routine case.
+     */
+    @Test
+    public final void divideBy10Test6() {
+        /*
+         * Set up variables
+         */
+        final int bignum = 4578;
+        NaturalNumber s = this.constructorTest(4578);
+        NaturalNumber sExpected = this.constructorRef("457");
+        /*
+         * Call method under test
+         */
+
+        int rem = s.divideBy10();
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(rem, 8);
+    }
+
+    /**
+     * test routine case.
+     */
+    @Test
+    public final void divideBy10Test7() {
+        /*
+         * Set up variables
+         */
+        final int smallnum = 2;
+        NaturalNumber s = this.constructorTest(2);
+        NaturalNumber sExpected = this.constructorRef("0");
+        /*
+         * Call method under test
+         */
+
+        int rem = s.divideBy10();
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(rem, 2);
+    }
+
+    /**
+     * test routine case.
+     */
+    @Test
+    public final void divideBy10Test8() {
+        /*
+         * Set up variables
+         */
+        final int numWithzero = 10000;
+        NaturalNumber s = this.constructorTest(10000);
+        NaturalNumber sExpected = this.constructorRef("1000");
+        /*
+         * Call method under test
+         */
+
+        int rem = s.divideBy10();
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(rem, 0);
+    }
     /**
      * test routine case of the remainder.
      */
