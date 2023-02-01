@@ -32,7 +32,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
      * Creator of initial representation.
      */
     private void createNewRep() {
-
+    //creates empty string
         this.rep = "";
 
         // TODO - fill in body
@@ -61,11 +61,12 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     public NaturalNumber3(int i) {
         assert i >= 0 : "Violation of: i >= 0";
 
-        this.createNewRep();
+        //catches int 0 and make sure there is only one representation for 0
 
         if (i == 0) {
             this.rep = "";
         } else {
+             //otherwise the rest of the values are turned into strings
             this.rep = Integer.toString(i);
         }
         // TODO - fill in body
@@ -83,8 +84,10 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         assert s.matches("0|[1-9]\\d*") : ""
                 + "Violation of: there exists n: NATURAL (s = TO_STRING(n))";
 
+         //catches String 0 and make sure there is only one representation for 0
         if (s.equals("0")) {
             this.rep = ("");
+            //otherwise the rest of the values are equal to each other
         } else {
             this.rep = s;
         }
@@ -100,9 +103,11 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     public NaturalNumber3(NaturalNumber n) {
         assert n != null : "Violation of: n is not null";
 
+        // catches Natural Number 0 and make sure there is only one representation for 0
         if(n.toInt() == 0) {
             this.rep = ("");
         }else {
+        //otherwise turn it the rest of the values into strings
         this.rep = n.toString();
         }
         // TODO - fill in body
@@ -151,12 +156,12 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     public final void multiplyBy10(int k) {
         assert 0 <= k : "Violation of: 0 <= k";
         assert k < RADIX : "Violation of: k < 10";
-
+       
+        //makes sure there is at least 1 digit and k is not 0 to be added on
          if (this.rep.length() > 0 || (k != 0)) {
+             //Puts the string together
         this.rep = this.rep.concat(Integer.toString(k));
          }
-        // TODO - fill in body
-
     }
 
     @Override
@@ -175,9 +180,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     @Override
     public final boolean isZero() {
 
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
+        //only value that is equal to 0 is the empty string
         return this.rep.equals("");
     }
 
