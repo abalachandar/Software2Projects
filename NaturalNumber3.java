@@ -32,10 +32,8 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
      * Creator of initial representation.
      */
     private void createNewRep() {
-    //creates empty string
+        //Provides a default value for this.rep.
         this.rep = "";
-
-        // TODO - fill in body
     }
 
     /*
@@ -46,9 +44,8 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
      * No-argument constructor.
      */
     public NaturalNumber3() {
-
+        //Creates new string
         this.createNewRep();
-        // TODO - fill in body
 
     }
 
@@ -61,15 +58,12 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     public NaturalNumber3(int i) {
         assert i >= 0 : "Violation of: i >= 0";
 
-        //catches int 0 and make sure there is only one representation for 0
-
+        // this.rep stores int i in string form
         if (i == 0) {
-            this.rep = "";
+            this.createNewRep();
         } else {
-             //otherwise the rest of the values are turned into strings
             this.rep = Integer.toString(i);
         }
-        // TODO - fill in body
 
     }
 
@@ -84,10 +78,9 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         assert s.matches("0|[1-9]\\d*") : ""
                 + "Violation of: there exists n: NATURAL (s = TO_STRING(n))";
 
-         //catches String 0 and make sure there is only one representation for 0
+        // this.rep is assigned the value stored in String s.
         if (s.equals("0")) {
-            this.rep = ("");
-            //otherwise the rest of the values are equal to each other
+            this.createNewRep();
         } else {
             this.rep = s;
         }
@@ -103,14 +96,12 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     public NaturalNumber3(NaturalNumber n) {
         assert n != null : "Violation of: n is not null";
 
-        // catches Natural Number 0 and make sure there is only one representation for 0
-        if(n.toInt() == 0) {
+        // this.rep stores the value of NaturalNumber in String form.
+        if (n.isZero()) {
             this.rep = ("");
-        }else {
-        //otherwise turn it the rest of the values into strings
-        this.rep = n.toString();
+        } else {
+            this.rep = n.toString();
         }
-        // TODO - fill in body
 
     }
 
@@ -156,22 +147,30 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     public final void multiplyBy10(int k) {
         assert 0 <= k : "Violation of: 0 <= k";
         assert k < RADIX : "Violation of: k < 10";
-       
+
         //makes sure there is at least 1 digit and k is not 0 to be added on
-         if (this.rep.length() > 0 || (k != 0)) {
-             //Puts the string together
-        this.rep = this.rep.concat(Integer.toString(k));
-         }
+        if (this.rep.length() > 0 || (k != 0)) {
+            //concatenates k to the end of this.rep.
+            this.rep = this.rep.concat(Integer.toString(k));
+        }
     }
 
     @Override
     public final int divideBy10() {
 
-         int rem = 0;
+        // initializes remainder to 0
+        int rem = 0;
+        // if statement checks whether length is greatert than 0. If not, 0
+        //divided by 0 is still 0 so statement will automatically return 0.
         if (this.rep.length() != 0) {
+            //Removes the final character of the string which is the ones place
+            //and the remainder when divided by 10. Remainder is then parsed to
+            //an int and returned.
             String digitChar = Character
                     .toString(this.rep.charAt(this.rep.length() - 1));
             rem = Integer.parseInt(digitChar);
+            //Cuts off the final character of the string, storing whats left
+            // into this.rep.
             this.rep = this.rep.substring(0, this.rep.length() - 1);
         }
         return rem;
@@ -179,7 +178,6 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
 
     @Override
     public final boolean isZero() {
-
         //only value that is equal to 0 is the empty string
         return this.rep.equals("");
     }
