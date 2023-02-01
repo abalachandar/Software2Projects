@@ -569,5 +569,24 @@ public abstract class NaturalNumberTest {
         boolean isZero = n.isZero();
         assertEquals(false, isZero);
     }
+    /**
+     * Tests isZero when Natural Number is zero.
+     */
+    @Test
+    public final void testIsZero3() {
+        NaturalNumber n = this.constructorTest("1000");
+        boolean isZero = n.isZero();
+        assertEquals(false, isZero);
+    }
+
+    /**
+     * Tests isZero when Natural Number is zero.
+     */
+    @Test
+    public final void testIsZero4() {
+        NaturalNumber n = this.constructorTest("502");
+        boolean isZero = n.isZero();
+        assertEquals(false, isZero);
+    }
 
 }
