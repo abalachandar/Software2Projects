@@ -149,8 +149,9 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         assert 0 <= k : "Violation of: 0 <= k";
         assert k < RADIX : "Violation of: k < 10";
 
+         if (this.rep.length() > 0 || (k != 0)) {
         this.rep = this.rep.concat(Integer.toString(k));
-
+         }
         // TODO - fill in body
 
     }
@@ -175,7 +176,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
         // TODO - fill in body
 
         // This line added just to make the component compilable.
-        return this.rep.isEmpty();
+        return this.rep.equals("");
     }
 
 }
