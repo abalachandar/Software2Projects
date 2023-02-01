@@ -412,7 +412,8 @@ public abstract class NaturalNumberTest {
          */
         assertEquals(sExpected, s);
     }
- /**
+
+    /**
      * test routine case.
      */
     @Test
@@ -420,8 +421,8 @@ public abstract class NaturalNumberTest {
         /*
          * Set up variables
          */
-        final int seventysix = 76;
-        NaturalNumber s = this.constructorTest(76);
+        final int six = 6;
+        NaturalNumber s = this.constructorTest("76");
         NaturalNumber sExpected = this.constructorRef("7");
         /*
          * Call method under test
@@ -432,7 +433,7 @@ public abstract class NaturalNumberTest {
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(rem, 6);
+        assertEquals(rem, six);
     }
 
     /**
@@ -443,8 +444,8 @@ public abstract class NaturalNumberTest {
         /*
          * Set up variables
          */
-        final int bignum = 4578;
-        NaturalNumber s = this.constructorTest(4578);
+        final int eight = 8;
+        NaturalNumber s = this.constructorTest("4578");
         NaturalNumber sExpected = this.constructorRef("457");
         /*
          * Call method under test
@@ -455,7 +456,7 @@ public abstract class NaturalNumberTest {
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(rem, 8);
+        assertEquals(rem, eight);
     }
 
     /**
@@ -467,7 +468,7 @@ public abstract class NaturalNumberTest {
          * Set up variables
          */
         final int smallnum = 2;
-        NaturalNumber s = this.constructorTest(2);
+        NaturalNumber s = this.constructorTest("2");
         NaturalNumber sExpected = this.constructorRef("0");
         /*
          * Call method under test
@@ -478,7 +479,7 @@ public abstract class NaturalNumberTest {
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(rem, 2);
+        assertEquals(rem, smallnum);
     }
 
     /**
@@ -489,8 +490,7 @@ public abstract class NaturalNumberTest {
         /*
          * Set up variables
          */
-        final int numWithzero = 10000;
-        NaturalNumber s = this.constructorTest(10000);
+        NaturalNumber s = this.constructorTest("10000");
         NaturalNumber sExpected = this.constructorRef("1000");
         /*
          * Call method under test
@@ -503,6 +503,7 @@ public abstract class NaturalNumberTest {
         assertEquals(sExpected, s);
         assertEquals(rem, 0);
     }
+
     /**
      * test routine case of the remainder.
      */
@@ -569,6 +570,7 @@ public abstract class NaturalNumberTest {
         boolean isZero = n.isZero();
         assertEquals(false, isZero);
     }
+
     /**
      * Tests isZero when Natural Number is zero.
      */
