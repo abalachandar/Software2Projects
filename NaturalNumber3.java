@@ -162,15 +162,14 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
     @Override
     public final int divideBy10() {
 
-        String temp = "";
-        String x = this.rep.substring(this.rep.length() - 1);
-        if (!this.rep.isEmpty()) {
-            temp = this.rep.substring(0, this.rep.length() - 1);
-        } else {
-            this.rep = "";
+         int rem = 0;
+        if (this.rep.length() != 0) {
+            String digitChar = Character
+                    .toString(this.rep.charAt(this.rep.length() - 1));
+            rem = Integer.parseInt(digitChar);
+            this.rep = this.rep.substring(0, this.rep.length() - 1);
         }
-        this.rep = temp;
-        return Integer.parseInt(x);
+        return rem;
     }
 
     @Override
