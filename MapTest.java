@@ -1,10 +1,14 @@
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
 import components.map.Map;
 
 /**
  * JUnit test fixture for {@code Map<String, String>}'s constructor and kernel
  * methods.
  *
- * @author Put your name here
+ * @author Adithya and Majed
  *
  */
 public abstract class MapTest {
@@ -79,5 +83,77 @@ public abstract class MapTest {
 
     // TODO - add test cases for constructor, add, remove, removeAny, value,
     // hasKey, and size
+    @Test
+    public final void testConstructor() {
+        Map<String, String> tester = this.constructorTest();
+        Map<String, String> expected = this.constructorRef();
+        assertEquals(tester, expected);
+
+    }
+
+    @Test
+    public final void testAdd() {
+        Map<String, String> tester = this.createFromArgsTest("Ohio", "Florida",
+                "Texas", "Michigan");
+        Map<String, String> expected = this.createFromArgsRef("Ohio", "Florida",
+                "Texas", "Michigan", "Iowa", "Alabama");
+
+        tester.add("Iowa", "Alabama");
+        assertEquals(tester, expected);
+    }
+
+    @Test
+    public final void testRemove() {
+        Map<String, String> tester = this.createFromArgsTest("Ohio", "Florida",
+                "Texas", "Michigan");
+        Map<String, String> expected = this.createFromArgsRef("Texas",
+                "Michigan");
+
+        tester.remove("Ohio");
+        assertEquals(tester, expected);
+
+    }
+
+    @Test
+    public final void testRemoveAny() {
+        Map<String, String> tester = this.createFromArgsTest("Ohio", "Florida",
+                "Texas", "Michigan");
+        int size1 = tester.size();
+        tester.removeAny();
+        int size2 = tester.size();
+        assertEquals(size1, size2 + 1);
+    }
+
+    @Test
+    public final void testValue() {
+        Map<String, String> tester = this.createFromArgsTest("Ohio", "Florida",
+                "Texas", "Michigan");
+        String test = tester.value("Ohio");
+        assertEquals(test, "Florida");
+    }
+
+    /**
+     *
+     * Test for Has-key.
+     */
+    @Test
+    public final void testHasKey() {
+        Map<String, String> tester = this.createFromArgsTest("Ohio", "Florida",
+                "Texas", "Michigan");
+        boolean test = tester.hasKey("Ohio");
+        assertEquals(test, true);
+    }
+
+    /**
+     * Test for Size.
+     */
+    @Test
+    public final void testSize() {
+        Map<String, String> tester = this.createFromArgsTest("Ohio", "Florida",
+                "Texas", "Michigan");
+        int size = tester.size();
+        int expectedSize = 2;
+        assertEquals(size, expectedSize);
+    }
 
 }
