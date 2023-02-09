@@ -84,6 +84,9 @@ public abstract class MapTest {
     // TODO - add test cases for constructor, add, remove, removeAny, value,
     // hasKey, and size
 
+    /**
+     * Tests Constructor.
+     */
     @Test
     public final void testConstructor() {
         Map<String, String> m = this.constructorTest();
@@ -92,19 +95,33 @@ public abstract class MapTest {
 
     }
 
+    /**
+     * Tests add routine case.
+     */
     @Test
-    public final void testAdd() {
+    public final void add1() {
         Map<String, String> m = this.createFromArgsTest("Ohio", "Florida",
                 "Texas", "Michigan");
+        /*
+         * Set up variables
+         */
         Map<String, String> expected = this.createFromArgsRef("Ohio", "Florida",
                 "Texas", "Michigan", "Iowa", "Alabama");
-
+        /*
+         * Call method under test
+         */
         m.add("Iowa", "Alabama");
+        /*
+         * Assert that values of variables match expectations
+         */
         assertEquals(expected, m);
     }
 
+    /**
+     * Tests add routine case.
+     */
     @Test
-    public final void add1() {
+    public final void add2() {
         /*
          * Set up variables
          */
@@ -122,8 +139,11 @@ public abstract class MapTest {
         assertEquals(expected, m);
     }
 
+    /**
+     * Tests add challenge case.
+     */
     @Test
-    public final void add2() {
+    public final void add3() {
         /*
          * Set up variables
          */
@@ -139,8 +159,11 @@ public abstract class MapTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Tests add routine case.
+     */
     @Test
-    public final void add3() {
+    public final void add4() {
         /*
          * Set up variables
          */
@@ -157,18 +180,76 @@ public abstract class MapTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Tests add challenge case.
+     */
+    @Test
+    public final void add5() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> m = this.createFromArgsRef("Ohio", "Florida",
+                "Texas", "Michigan");
+        Map<String, String> expected = this.createFromArgsRef("Ohio", "Florida",
+                "Texas", "Michigan", "Iowa", "");
+        /*
+         * Call method under test
+         */
+        m.add("Iowa", "");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(expected, m);
+    }
+
+    /**
+     * Tests add challenge case.
+     */
+    @Test
+    public final void add6() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> m = this.createFromArgsRef("Ohio", "Florida",
+                "Texas", "Michigan");
+        Map<String, String> expected = this.createFromArgsRef("Ohio", "Florida",
+                "Texas", "Michigan", "", "Alabama");
+        /*
+         * Call method under test
+         */
+        m.add("", "Alabama");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(expected, m);
+    }
+
+    /**
+     * Tests remove routine case.
+     */
     @Test
     public final void remove4() {
+        /*
+         * Set up variables
+         */
         Map<String, String> m = this.createFromArgsTest("Ohio", "Florida",
                 "Texas", "Michigan");
         Map<String, String> expected = this.createFromArgsRef("Texas",
                 "Michigan");
-
+        /*
+         * Call method under test
+         */
         m.remove("Ohio");
+        /*
+         * Assert that values of variables match expectations
+         */
         assertEquals(m, expected);
 
     }
 
+    /**
+     * Tests remove routine case.
+     */
     @Test
     public final void remove1() {
         /*
@@ -186,6 +267,9 @@ public abstract class MapTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Tests remove challenge case.
+     */
     @Test
     public final void remove2() {
         /*
@@ -204,6 +288,9 @@ public abstract class MapTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Tests remove routine case.
+     */
     @Test
     public final void remove3() {
         /*
@@ -224,8 +311,26 @@ public abstract class MapTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Tests remove challenge case.
+     */
     @Test
-    public final void removeAny() {
+    public final void remove5() {
+        Map<String, String> m = this.createFromArgsTest("Ohio", "Florida", "",
+                "Michigan");
+        Map<String, String> expected = this.createFromArgsRef("Ohio",
+                "Florida");
+
+        m.remove("");
+        assertEquals(m, expected);
+
+    }
+
+    /**
+     * Tests removeAny routine case.
+     */
+    @Test
+    public final void removeAny1() {
         /*
          * Set up variables
          */
@@ -244,10 +349,35 @@ public abstract class MapTest {
         assertEquals(msize, expectedSize);
     }
 
+    /**
+     * Tests removeAny routine case.
+     */
     @Test
-    public final void testRemoveAny() {
+    public final void removeAny2() {
+        /*
+         * Set up variables
+         */
         Map<String, String> m = this.createFromArgsTest("Ohio", "Florida",
                 "Texas", "Michigan");
+        /*
+         * Call method under test
+         */
+        m.removeAny();
+        /*
+         * Assert that values of variables match expectations
+         */
+        int msize = m.size();
+        int expectedSize = m.size();
+        assertEquals(msize, expectedSize);
+
+    }
+
+    /**
+     * Tests removeAny challenge case.
+     */
+    @Test
+    public final void removeAny3() {
+        Map<String, String> m = this.createFromArgsTest("Ohio", "Florida");
         m.removeAny();
         int msize = m.size();
         int expectedSize = m.size();
@@ -255,16 +385,31 @@ public abstract class MapTest {
 
     }
 
+    /**
+     * Tests value routine case.
+     */
     @Test
-    public final void Value1() {
+    public final void value1() {
+        /*
+         * Set up variables
+         */
         Map<String, String> m = this.createFromArgsTest("Ohio", "Florida",
                 "Texas", "Michigan");
+        /*
+         * Call method under test
+         */
         String test = m.value("Ohio");
+        /*
+         * Assert that values of variables match expectations
+         */
         assertEquals(test, "Florida");
     }
 
+    /**
+     * Tests value challenge case.
+     */
     @Test
-    public final void Value2() {
+    public final void value2() {
         /*
          * Set up variables
          */
@@ -280,8 +425,11 @@ public abstract class MapTest {
         assertEquals(test, "");
     }
 
+    /**
+     * Tests value routine case.
+     */
     @Test
-    public final void Value3() {
+    public final void value3() {
         /*
          * Set up variables
          */
@@ -299,17 +447,48 @@ public abstract class MapTest {
     }
 
     /**
-     *
-     * Test for Has-key.
+     * Tests value challenge case.
      */
     @Test
-    public final void testHasKey() {
+    public final void value4() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> m = this.createFromArgsTest("", "112");
+        /*
+         * Call method under test
+         */
+
+        String test = m.value("");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(test, "112");
+    }
+
+    /**
+     * Test for Has-key routine case.
+     */
+    @Test
+    public final void hasKey1() {
+        /*
+         * Set up variables
+         */
         Map<String, String> m = this.createFromArgsTest("Ohio", "Florida",
                 "Texas", "Michigan");
+        /*
+         * Call method under test
+         */
         boolean test = m.hasKey("Ohio");
+        /*
+         * Assert that values of variables match expectations
+         */
         assertEquals(test, true);
     }
 
+    /**
+     * Test for Has-key routine case.
+     */
     @Test
     public final void hasKey2() {
         /*
@@ -328,19 +507,95 @@ public abstract class MapTest {
     }
 
     /**
-     * Test for Size.
+     * Test for Has-key routine case.
      */
     @Test
-    public final void testSize() {
-        Map<String, String> m = this.createFromArgsTest("Ohio", "Florida",
-                "Texas", "Michigan");
+    public final void hasKey3() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> m = this.createFromArgsTest("9", "7", "5", "12",
+                "152", "63");
+        /*
+         * Call method under test
+         */
+
+        boolean test = m.hasKey("152");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(test, true);
+    }
+
+    /**
+     * Test for Has-key routine case.
+     */
+    @Test
+    public final void hasKey4() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> m = this.createFromArgsTest("9", "7", "5", "12",
+                "152", "63", "201", "447");
+        /*
+         * Call method under test
+         */
+
+        boolean test = m.hasKey("200");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(test, false);
+    }
+
+    /**
+     * Test for Has-key challenge case.
+     */
+    @Test
+    public final void hasKey5() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> m = this.createFromArgsTest("", "7", "5", "12",
+                "152", "63", "201", "447");
+        /*
+         * Call method under test
+         */
+
+        boolean test = m.hasKey("");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(test, true);
+    }
+
+    /**
+     * Test for Size challenge case .
+     */
+    @Test
+    public final void size1() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> m = this.createFromArgsTest();
+        int sExpected = 0;
+        /*
+         * Call method under test
+         */
+
         int size = m.size();
-        int sExpected = 2;
+        /*
+         * Assert that values of variables match expectations
+         */
         assertEquals(size, sExpected);
     }
 
+    /**
+     * Test for Size routine case .
+     */
+
     @Test
-    public final void size1() {
+    public final void size2() {
         /*
          * Set up variables
          */
@@ -351,11 +606,32 @@ public abstract class MapTest {
          */
 
         int size = s.size();
-        int sExpected = 5;
+        final int sExpected = 5;
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(size, sExpected);
 
+    }
+
+    /**
+     * Test for Size routine case .
+     */
+    @Test
+    public final void size3() {
+        /*
+         * Set up variables
+         */
+        Map<String, String> s = this.createFromArgsTest("17", "18");
+        /*
+         * Call method under test
+         */
+
+        int size = s.size();
+        int sExpected = 1;
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(size, sExpected);
     }
 }
