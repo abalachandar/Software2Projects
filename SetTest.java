@@ -71,6 +71,7 @@ public abstract class SetTest {
     }
 
     // TODO - add test cases for constructor, add, remove, removeAny, contains, and size
+ @Test
     public final void add1() {
         /*
          * Set up variables
@@ -88,7 +89,7 @@ public abstract class SetTest {
         assertEquals(sExpected, s);
         assertEquals(sExpected, s);
     }
-
+@Test
     public final void add2() {
         /*
          * Set up variables
@@ -186,7 +187,7 @@ public abstract class SetTest {
         assertEquals(sExpected, s);
 
     }
-
+@Test
     public final void contains1() {
         /*
          * Set up variables
@@ -204,7 +205,7 @@ public abstract class SetTest {
         assertEquals(sExpected, s);
         assertEquals(sExpected, s);
     }
-
+@Test
     public final void contains2() {
         /*
          * Set up variables
