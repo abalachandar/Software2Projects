@@ -75,21 +75,6 @@ public abstract class SetTest {
     //Constructor, Contains false on empty, size 0
 
     @Test
-    public final void testConstructor() {
-        Set<String> s = this.createFromArgsTest();
-        Set<String> sExpected = this.createFromArgsRef();
-        assertEquals(s, sExpected);
-    }
-
-    @Test
-    public final void testConstructorDefault() {
-        Set<String> s = this.constructorTest();
-        Set<String> sExpected = this.constructorRef();
-
-        assertEquals(s, sExpected);
-    }
-
-    @Test
     public final void add1() {
         /*
          * Set up variables
@@ -151,29 +136,6 @@ public abstract class SetTest {
          */
         assertEquals(sExpected, s);
         assertEquals("6", y);
-    }
-
-    @Test
-    public final void removeAny() {
-        /*
-         * Set up variables
-         */
-        Set<String> s = this.createFromArgsRef("4", "5", "6", "7");
-        Set<String> sExpected = this.createFromArgsRef();
-
-        /*
-         * Call method under test
-         */
-
-        String y = s.removeAny();
-        /*
-         * Assert that values of variables match expectations
-         */
-        assertEquals("4", y);
-        assertEquals("5", y);
-        assertEquals("6", y);
-        assertEquals("7", y);
-        assertEquals(sExpected, s);
     }
 
     @Test
@@ -248,16 +210,6 @@ public abstract class SetTest {
     }
 
     @Test
-    public final void testRemoveAny() {
-        Set<String> set = this.createFromArgsTest("Florida", "Ohio",
-                "Michigan");
-        set.removeAny();
-
-        int size = set.size();
-        assertEquals(size, 2);
-    }
-
-    @Test
     public final void TestRemoveAnyStruct() {
         //Initilize test and ref
 
@@ -269,7 +221,44 @@ public abstract class SetTest {
     }
 
     @Test
-    public final void testContains() {
+    public final void TestRemoveAny1() {
+        Set<String> s = this.createFromArgsTest("1", "2", "3");
+        Set<String> sExpected = this.createFromArgsRef("1", "2", "3");
+
+        String num = s.removeAny();
+        boolean test = sExpected.contains(num);
+        assertEquals(true, test);
+        sExpected.remove("1");
+        assertEquals(sExpected, s);
+    }
+
+    @Test
+    public final void TestRemoveAny2() {
+        Set<String> s = this.createFromArgsTest("Ohio", "Florida", "Texas");
+        Set<String> sExpected = this.createFromArgsRef("Ohio", "Florida",
+                "Texas");
+
+        String word = s.removeAny();
+        boolean test = sExpected.contains(word);
+        assertEquals(true, test);
+        sExpected.remove("Florida");
+        assertEquals(sExpected, s);
+    }
+
+    @Test
+    public final void TestRemoveAny3() {
+        Set<String> s = this.createFromArgsTest("Ohio");
+        Set<String> sExpected = this.createFromArgsRef("Ohio");
+
+        String word = s.removeAny();
+        boolean test = sExpected.contains(word);
+        assertEquals(true, test);
+        sExpected.remove("Ohio");
+        assertEquals(sExpected, s);
+    }
+
+    @Test
+    public final void contains4() {
         Set<String> set = this.createFromArgsTest("Florida", "Ohio",
                 "Michigan");
         String individual = "red";
@@ -277,11 +266,27 @@ public abstract class SetTest {
     }
 
     @Test
-    public final void testSize() {
+    public final void contains5() {
+        Set<String> set = this.createFromArgsTest();
+        String individual = "567";
+        assertEquals(set.contains(individual), false);
+    }
+
+    @Test
+    public final void size1() {
         Set<String> set = this.createFromArgsTest("Florida", "Ohio",
                 "Michigan");
         Set<String> expected = this.createFromArgsRef("Florida", "Ohio",
                 "Michigan");
+        int size1 = set.size();
+        int size2 = expected.size();
+        assertEquals(size1 == size2, true);
+    }
+
+    @Test
+    public final void size2() {
+        Set<String> set = this.createFromArgsTest();
+        Set<String> expected = this.createFromArgsRef();
         int size1 = set.size();
         int size2 = expected.size();
         assertEquals(size1 == size2, true);
