@@ -63,15 +63,14 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
             inTree = false;
         } else {
             T root = t.disassemble(tLeft, tRight);
-            boolean RinTree = isInTree(tRight, x);
-            boolean LinTree = isInTree(tLeft, x);
 
             if (x.compareTo(root) == 0) {
                 inTree = true;
-            } else if (x.compareTo(root) == -1) {
-                inTree = LinTree;
+            } else if (x.compareTo(root) < 0) {
+                inTree = isInTree(tLeft, x);
             } else {
-                inTree = RinTree;
+                inTree = isInTree(tRight, x);
+
             }
             t.assemble(root, tLeft, tRight);
         }
