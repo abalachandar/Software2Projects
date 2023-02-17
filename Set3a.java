@@ -181,13 +181,16 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
         if (root.compareTo(x) == 0) {
             remove = root;
             t.transferFrom(tRight);
-        } else {
+        } else if (root.compareTo(x) == -1){
             remove = removeFromTree(tLeft,x);
-            t.assemble(root, tLeft, tRight);
-
+        }else {
+            removeFromTree(tRight,x);
+           
         }
+        t.assemble(root, tLeft, tRight);
         return remove;
     }
+
 
     /**
      * Creator of initial representation.
