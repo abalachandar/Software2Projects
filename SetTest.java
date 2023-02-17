@@ -71,8 +71,24 @@ public abstract class SetTest {
     }
 
     // TODO - add test cases for constructor, add, remove, removeAny, contains, and size
-    
+
     //Constructor, Contains false on empty, size 0
+
+    @Test
+    public final void testConstructor() {
+        Set<String> s = this.createFromArgsTest();
+        Set<String> sExpected = this.createFromArgsRef();
+        assertEquals(s, sExpected);
+    }
+
+    @Test
+    public final void testConstructorDefault() {
+        Set<String> s = this.constructorTest();
+        Set<String> sExpected = this.constructorRef();
+
+        assertEquals(s, sExpected);
+    }
+
     @Test
     public final void add1() {
         /*
@@ -240,13 +256,13 @@ public abstract class SetTest {
         int size = set.size();
         assertEquals(size, 2);
     }
-    
+
     @Test
     public final void TestRemoveAnyStruct() {
         //Initilize test and ref
-        
+
         //Call remove any
-        
+
         //assert that the reference contains the removed
         //Assert euqals (valueRemoved, ref.remove(valueRemoved)
         //Assert Equals (test, ref)
