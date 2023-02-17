@@ -53,28 +53,47 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
             T x) {
         assert t != null : "Violation of: t is not null";
         assert x != null : "Violation of: x is not null";
+        
         BinaryTree<T> tLeft = t.newInstance();
         BinaryTree<T> tRight = t.newInstance();
 
         boolean inTree = false;
-        if (t.size() == 0) {
-            inTree = false;
-        } else {
+        if (t.size() >= 1) {
             T root = t.disassemble(tLeft, tRight);
-            boolean RinTree = isInTree(tRight, x);
-            boolean LinTree = isInTree(tLeft, x);
-
-            if (x.compareTo(root) == 0) {
+            if (root.compareTo(x) == 0) {
                 inTree = true;
-            } else if (x.compareTo(root) == -1) {
-                inTree = LinTree;
-            } else {
-                inTree = RinTree;
+            } else if (root.compareTo(x) < 0) {
+                inTree = isInTree(tLeft, x);
+            } else if (root.compareTo(x) > 0) {
+                inTree = isInTree(tRight, x);
             }
             t.assemble(root, tLeft, tRight);
         }
 
         return inTree;
+    }
+//         BinaryTree<T> tLeft = t.newInstance();
+//         BinaryTree<T> tRight = t.newInstance();
+
+//         boolean inTree = false;
+//         if (t.size() == 0) {
+//             inTree = false;
+//         } else {
+//             T root = t.disassemble(tLeft, tRight);
+//             boolean RinTree = isInTree(tRight, x);
+//             boolean LinTree = isInTree(tLeft, x);
+
+//             if (x.compareTo(root) == 0) {
+//                 inTree = true;
+//             } else if (x.compareTo(root) == -1) {
+//                 inTree = LinTree;
+//             } else {
+//                 inTree = RinTree;
+//             }
+//             t.assemble(root, tLeft, tRight);
+//         }
+
+//         return inTree;
     }
 
     /**
