@@ -150,8 +150,8 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
      * @param t
      *            the {@code BinaryTree} from which to remove label {@code x}
      * @param x
-     *            the label to be removed
-     * @return the removed label
+     *            the label to be remove
+     * @return the remove label
      * @updates t
      * @requires IS_BST(t) and x is in labels(t)
      * @ensures <pre>
@@ -173,16 +173,23 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
         if (root.compareTo(x) == 0) {
             root = t.disassemble(tLeft, tRight);
             remove = root;
-            t.transferFrom(tLeft);
-        } else {
+            if (tLeft.size() > 0 && tRight.size() > 0) {
+                root = removeSmallest(tRight);
+                t.assemble(root, tLeft, tRight);
+            } else if (tLeft.size() > 0 && tRight.size() < 0) {
+                t.transferFrom(tLeft);
+            } else if (tLeft.size() < 0 && tRight.size() > 0) {
+                t.transferFrom(tRight);
+            }
+        } else if (root.compareTo(x) < 0) {
+            root = t.disassemble(tLeft, tRight);
             remove = removeFromTree(tLeft, x);
-
             t.assemble(root, tLeft, tRight);
-
+        } else if (root.compareTo(x) > 0) {
+            root = t.disassemble(tLeft, tRight);
+            remove = removeFromTree(tRight, x);
+            t.assemble(root, tLeft, tRight);
         }
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
         return remove;
     }
 
@@ -263,19 +270,14 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
         assert x != null : "Violation of: x is not null";
         assert this.contains(x) : "Violation of: x is in this";
 
-        T remove = removeFromTree(this.tree, x);
-
-        return remove;
+        return removeFromTree(this.tree, x);
     }
 
     @Override
     public final T removeAny() {
         assert this.size() > 0 : "Violation of: this /= empty_set";
 
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return null;
+        return removeSmallest(this.tree);
     }
 
     @Override
