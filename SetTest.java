@@ -71,7 +71,7 @@ public abstract class SetTest {
     }
 
     // TODO - add test cases for constructor, add, remove, removeAny, contains, and size
- @Test
+    @Test
     public final void add1() {
         /*
          * Set up variables
@@ -87,9 +87,9 @@ public abstract class SetTest {
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(sExpected, s);
     }
-@Test
+
+    @Test
     public final void add2() {
         /*
          * Set up variables
@@ -187,7 +187,8 @@ public abstract class SetTest {
         assertEquals(sExpected, s);
 
     }
-@Test
+
+    @Test
     public final void contains1() {
         /*
          * Set up variables
@@ -205,7 +206,8 @@ public abstract class SetTest {
         assertEquals(sExpected, s);
         assertEquals(sExpected, s);
     }
-@Test
+
+    @Test
     public final void contains2() {
         /*
          * Set up variables
@@ -224,4 +226,54 @@ public abstract class SetTest {
         assertEquals(sExpected, s);
     }
 
+    @Test
+    public final void testAdd() {
+        Set<String> set = this.createFromArgsTest("Ohio", "Michigan");
+        Set<String> expected = this.createFromArgsRef("Florida", "Ohio",
+                "Michigan");
+        set.add("Florida");
+        assertEquals(set, expected);
+    }
+
+    @Test
+    public final void testRemoveNonEmpty() {
+        Set<String> set = this.createFromArgsTest("Florida", "Ohio",
+                "Michigan");
+        Set<String> expected = this.createFromArgsRef("Florida", "Michigan");
+        set.remove("Ohio");
+        assertEquals(set, expected);
+    }
+
+    @Test
+    public final void testRemoveAny() {
+        Set<String> set = this.createFromArgsTest("Florida", "Ohio",
+                "Michigan");
+        Set<String> expected = this.createFromArgsRef("Florida", "Ohio",
+                "Michigan");
+        String individual = set.removeAny();
+
+        int size = ((CharSequence) expected).length();
+        assertEquals(size, 2);
+    }
+
+    @Test
+    public final void testContains() {
+        Set<String> set = this.createFromArgsTest("Florida", "Ohio",
+                "Michigan");
+        Set<String> expected = this.createFromArgsRef("Florida", "Ohio",
+                "Michigan");
+        String individual = "red";
+        assertEquals(expected.contains(individual), true);
+    }
+
+    @Test
+    public final void testSize() {
+        Set<String> set = this.createFromArgsTest("Florida", "Ohio",
+                "Michigan");
+        Set<String> expected = this.createFromArgsRef("Florida", "Ohio",
+                "Michigan");
+        int size1 = set.size();
+        int size2 = expected.size();
+        assertEquals(size1 == size2, true);
+    }
 }
