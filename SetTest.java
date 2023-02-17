@@ -71,6 +71,8 @@ public abstract class SetTest {
     }
 
     // TODO - add test cases for constructor, add, remove, removeAny, contains, and size
+    
+    //Constructor, Contains false on empty, size 0
     @Test
     public final void add1() {
         /*
@@ -90,19 +92,10 @@ public abstract class SetTest {
 
     @Test
     public final void add2() {
-        /*
-         * Set up variables
-         */
-        Set<String> s = this.createFromArgsTest("3", "4");
-        Set<String> sExpected = this.createFromArgsRef("3", "4", "5");
-        /*
-         * Call method under test
-         */
-        s.add("5");
-        /*
-         * Assert that values of variables match expectations
-         */
-        assertEquals(sExpected, s);
+        Set<String> set = this.createFromArgsTest("3", "4");
+        Set<String> expected = this.createFromArgsRef("2", "3", "4");
+        set.add("2");
+        assertEquals(set, expected);
     }
 
     @Test
@@ -110,8 +103,8 @@ public abstract class SetTest {
         /*
          * Set up variables
          */
-        Set<String> s = this.createFromArgsTest("4", "5", "6", "7");
-        Set<String> sExpected = this.createFromArgsRef("5", "6", "7");
+        Set<String> s = this.createFromArgsTest("4");
+        Set<String> sExpected = this.createFromArgsRef();
         /*
          * Call method under test
          */
@@ -120,8 +113,9 @@ public abstract class SetTest {
         /*
          * Assert that values of variables match expectations
          */
-        assertEquals(sExpected, s);
+
         assertEquals("4", y);
+        assertEquals(sExpected, s);
     }
 
     @Test
@@ -148,7 +142,9 @@ public abstract class SetTest {
         /*
          * Set up variables
          */
-        Set<String> s = this.createFromArgsTest("4", "5", "6", "7");
+        Set<String> s = this.createFromArgsRef("4", "5", "6", "7");
+        Set<String> sExpected = this.createFromArgsRef();
+
         /*
          * Call method under test
          */
@@ -161,6 +157,7 @@ public abstract class SetTest {
         assertEquals("5", y);
         assertEquals("6", y);
         assertEquals("7", y);
+        assertEquals(sExpected, s);
     }
 
     @Test
@@ -229,7 +226,8 @@ public abstract class SetTest {
         Set<String> set = this.createFromArgsTest("Florida", "Ohio",
                 "Michigan");
         Set<String> expected = this.createFromArgsRef("Florida", "Michigan");
-        set.remove("Ohio");
+        String removed = set.remove("Ohio");
+        assertEquals("Ohio", removed);
         assertEquals(set, expected);
     }
 
@@ -241,6 +239,17 @@ public abstract class SetTest {
 
         int size = set.size();
         assertEquals(size, 2);
+    }
+    
+    @Test
+    public final void TestRemoveAnyStruct() {
+        //Initilize test and ref
+        
+        //Call remove any
+        
+        //assert that the reference contains the removed
+        //Assert euqals (valueRemoved, ref.remove(valueRemoved)
+        //Assert Equals (test, ref)
     }
 
     @Test
