@@ -3,6 +3,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import components.queue.Queue;
+import components.queue.Queue1L;
 import components.sortingmachine.SortingMachine;
 import components.sortingmachine.SortingMachineSecondary;
 
@@ -191,18 +192,18 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         int left = 2 * top + 1;
         if (2 * top + 1 <= last) {
             if (2 * top + 2 <= last) {
-                if (array[2 * top + 1] <= array[2 * top + 2]) {
+                if (order.compare(array[left], array[right]) <= 0) {
                     smallestChild = 2 * top + 1;
                 } else {
                     smallestChild = 2 * top + 2;
                 }
-                if (array[smallestChild] < array[top]) {
+                if (order.compare(array[smallestChild], array[top]) <= 0) {
                     exchangeEntries(array, top, smallestChild);
-                    siftDown(array, smallestChild, last);
+                    siftDown(array, smallestChild, last, order);
                 }
 
             } else {
-                if (array[2 * top + 1] < array[top]) {
+                if (order.compare(array[left], array[top]) == -1) {
 
                 }
                 exchangeEntries(array, top, 2 * top + 1);
@@ -252,6 +253,17 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         // TODO - fill in body
         // *** you must use the recursive algorithm discussed in class ***
+
+        int right = 2 * top + 2;
+        int left = 2 * top + 1;
+        int length = array.length - 1;
+
+        if (!isHeap(array, top, length, order)) {
+            heapify(array, left, order);
+            heapify(array, right, order);
+
+            siftDown(array, top, length, order);
+        }
 
     }
 
@@ -412,7 +424,11 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
     private void createNewRep(Comparator<T> order) {
 
         // TODO - fill in body
-
+        this.insertionMode = true;
+        this.machineOrder = order;
+        this.entries = new Queue1L<T>();
+        this.heap = null;
+        this.heapSize = 0;
     }
 
     /*
@@ -487,6 +503,7 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         // TODO - fill in body
 
         assert this.conventionHolds();
+        this.entries.enqueue(x);
     }
 
     @Override
@@ -494,7 +511,7 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         assert this.isInInsertionMode() : "Violation of: this.insertion_mode";
 
         // TODO - fill in body
-
+        this.insertionMode = !this.isInInsertionMode();
         assert this.conventionHolds();
     }
 
@@ -508,7 +525,7 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         assert this.conventionHolds();
         // Fix this line to return the result after checking the convention.
-        return null;
+        return this.entries.dequeue();
     }
 
     @Override
@@ -530,7 +547,7 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         assert this.conventionHolds();
         // Fix this line to return the result after checking the convention.
-        return 0;
+        return this.entries.length();
     }
 
     @Override
