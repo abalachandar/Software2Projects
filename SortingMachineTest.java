@@ -139,7 +139,6 @@ public abstract class SortingMachineTest {
 
     // TODO - add test cases for add, changeToExtractionMode, removeFirst,
     // isInInsertionMode, order, and size
-
     @Test
     public final void add1() {
 
@@ -156,9 +155,9 @@ public abstract class SortingMachineTest {
     public final void chnageToExtractionMode1() {
 
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
-                " red");
+                "blue");
         SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
-                "green", "red");
+                "green", "blue");
 
         m.changeToExtractionMode();
         assertEquals(mExpected, m);
@@ -167,25 +166,26 @@ public abstract class SortingMachineTest {
     @Test
     public final void removeFirst1() {
 
-        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
-                "red");
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
-                "red");
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
+                "green");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
         String rem = m.removeFirst();
 
         assertEquals(mExpected, m);
+        assertEquals(rem, "green");
     }
 
     @Test
     public final void removeFirst2() {
 
-        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
-                " red");
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
-                " red");
-
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
+                "green", "red");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
+                "red");
         String rem = m.removeFirst();
+
         assertEquals(mExpected, m);
+        assertEquals(rem, "green");
     }
 
     @Test
@@ -206,12 +206,13 @@ public abstract class SortingMachineTest {
 
         SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
                 "green", " red");
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
-                " red");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
+                "green", " red");
 
         boolean isIn = m.isInInsertionMode();
 
-        assertEquals(true, isIn);
+        assertEquals(false, isIn);
+        assertEquals(mExpected, m);
     }
 
     @Test
@@ -220,7 +221,7 @@ public abstract class SortingMachineTest {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
                 " red");
         SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
-                " red");
+                "green", " red");
 
         assertEquals(mExpected, m);
     }
@@ -228,11 +229,11 @@ public abstract class SortingMachineTest {
     @Test
     public final void size1() {
 
-        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
-                " red");
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
-                " red");
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true);
+        int size = m.size();
 
+        assertEquals(0, size);
         assertEquals(mExpected, m);
     }
 
@@ -242,11 +243,14 @@ public abstract class SortingMachineTest {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
                 " red");
         SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
-                " red");
+                "green", " red");
+        int size = m.size();
 
+        assertEquals(2, size);
         assertEquals(mExpected, m);
     }
-     @Test
+
+    @Test
     public final void testAdd2() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "Ohio");
         SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
@@ -266,8 +270,9 @@ public abstract class SortingMachineTest {
     @Test
     public final void testChangeToExtractionMode2() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "Ohio");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
+                "Ohio");
         m.changeToExtractionMode();
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
         assertEquals(mExpected, m);
     }
 
@@ -275,9 +280,10 @@ public abstract class SortingMachineTest {
     public final void testChangeToExtractionMode3() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "Ohio",
                 "Florida", "Texas");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
+                "Ohio", "Florida", "Texas");
         m.changeToExtractionMode();
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+
         assertEquals(mExpected, m);
     }
-
 }
