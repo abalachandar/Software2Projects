@@ -132,7 +132,7 @@ public abstract class SortingMachineTest {
     }
 
     /**
-     * Test add empty.
+     * Boundary case for add.
      */
     @Test
     public final void testAddEmpty() {
@@ -147,7 +147,7 @@ public abstract class SortingMachineTest {
     // isInInsertionMode, order, and size
 
     /**
-     * routin case for add.
+     * routine case for add.
      */
     @Test
     public final void add2() {
@@ -162,7 +162,7 @@ public abstract class SortingMachineTest {
     }
 
     /**
-     * routin case for add.
+     * routine case for add.
      */
     @Test
     public final void testAdd3() {
@@ -173,8 +173,22 @@ public abstract class SortingMachineTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Tests boundary case for changeToExtractionMode.
+     */
     @Test
-    public final void chnageToExtractionMode1() {
+    public final void testChangeToExtractionMode1() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+        m.changeToExtractionMode();
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * Tests routine case for changeToExtractionMode.
+     */
+    @Test
+    public final void changeToExtractionMode2() {
 
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
                 "blue");
@@ -185,6 +199,21 @@ public abstract class SortingMachineTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Tests routine case for changeToExtractionMode.
+     */
+    @Test
+    public final void testChangeToExtractionMode3() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "Ohio");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
+                "Ohio");
+        m.changeToExtractionMode();
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * Tests boundary case for removeFirst.
+     */
     @Test
     public final void removeFirst1() {
 
@@ -197,6 +226,9 @@ public abstract class SortingMachineTest {
         assertEquals(rem, "green");
     }
 
+    /**
+     * Tests routine case for removeFirst.
+     */
     @Test
     public final void removeFirst2() {
 
@@ -210,21 +242,58 @@ public abstract class SortingMachineTest {
         assertEquals(rem, "green");
     }
 
+    /**
+     * Tests boundary case for isInInsertionMode.
+     */
     @Test
     public final void isInInsertionMode1() {
 
-        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
-                " red");
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
-                " red");
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true);
 
         boolean isIn = m.isInInsertionMode();
 
         assertEquals(true, isIn);
+        assertEquals(mExpected, m);
     }
 
+    /**
+     * Tests boundary case for isInInsertionMode.
+     */
     @Test
     public final void isInInsertionMode2() {
+
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+
+        boolean isIn = m.isInInsertionMode();
+
+        assertEquals(false, isIn);
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * Tests routine case for isInInsertionMode.
+     */
+    @Test
+    public final void isInInsertionMode3() {
+
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
+                "red");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "green", "red");
+
+        boolean isIn = m.isInInsertionMode();
+
+        assertEquals(true, isIn);
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * Tests routine case for isInInsertionMode.
+     */
+    @Test
+    public final void isInInsertionMode4() {
 
         SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
                 "green", " red");
@@ -237,8 +306,35 @@ public abstract class SortingMachineTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Tests boundary case for order.
+     */
     @Test
     public final void order1() {
+
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true);
+
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * Tests boundary case for order.
+     */
+    @Test
+    public final void order2() {
+
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * Tests routine case for order.
+     */
+    @Test
+    public final void order3() {
 
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
                 " red");
@@ -248,6 +344,23 @@ public abstract class SortingMachineTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Tests routine case for order.
+     */
+    @Test
+    public final void order4() {
+
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
+                "green", " red");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
+                "green", " red");
+
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * Test boundary case for size.
+     */
     @Test
     public final void size1() {
 
@@ -259,8 +372,25 @@ public abstract class SortingMachineTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Test boundary case for size.
+     */
     @Test
     public final void size2() {
+
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+        int size = m.size();
+
+        assertEquals(0, size);
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * Test routine case for size.
+     */
+    @Test
+    public final void size3() {
 
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
                 " red");
@@ -272,31 +402,20 @@ public abstract class SortingMachineTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Test routine case for size.
+     */
     @Test
-    public final void testChangeToExtractionMode1() {
-        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
-        m.changeToExtractionMode();
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
-        assertEquals(mExpected, m);
-    }
+    public final void size4() {
 
-    @Test
-    public final void testChangeToExtractionMode2() {
-        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "Ohio");
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
+                "green", " red");
         SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
-                "Ohio");
-        m.changeToExtractionMode();
+                "green", " red");
+        int size = m.size();
+
+        assertEquals(2, size);
         assertEquals(mExpected, m);
     }
 
-    @Test
-    public final void testChangeToExtractionMode3() {
-        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "Ohio",
-                "Florida", "Texas");
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
-                "Ohio", "Florida", "Texas");
-        m.changeToExtractionMode();
-
-        assertEquals(mExpected, m);
-    }
 }
