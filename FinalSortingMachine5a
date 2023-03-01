@@ -193,7 +193,7 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
                 } else {
                     smallestChild = 2 * top + 2;
                 }
-                if (order.compare(array[smallestChild], array[top]) <= 0) {
+                if (order.compare(array[smallestChild], array[top]) < 0) {
                     exchangeEntries(array, top, smallestChild);
                     siftDown(array, smallestChild, last, order);
                 }
@@ -246,14 +246,14 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         int right = 2 * top + 2;
         int left = 2 * top + 1;
-        if (left < array.length) {
-            heapify(array, left, order);
-        }
-        if (right < array.length) {
-            heapify(array, right, order);
-        }
-        siftDown(array, top, array.length - 1, order);
+        int length = array.length - 1;
 
+        if (!isHeap(array, top, length, order)) {
+            heapify(array, left, order);
+            heapify(array, right, order);
+
+            siftDown(array, top, length, order);
+        }
     }
 
     /**
@@ -515,7 +515,6 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         T first = this.heap[0];
         this.heapSize--;
         exchangeEntries(this.heap, 0, this.heapSize);
-
         siftDown(this.heap, 0, this.heapSize - 1, this.machineOrder);
         assert this.conventionHolds();
         return first;
