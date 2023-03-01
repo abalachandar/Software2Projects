@@ -302,11 +302,16 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
          * cannot fail.
          */
 
+        //creates new array for heap.
         T[] heap = (T[]) (new Object[q.length()]);
-        int len = q.length();
-        for (int i = 0; i < len; i++) {
+        //sets length equal to that of queue.
+        int length = q.length();
+        //iterates through entire length of queue 
+        //dequeing each position into array.
+        for (int i = 0; i < length; i++) {
             heap[i] = q.dequeue();
         }
+        //calls upon heapify to reorder array accordingly.
         heapify(heap, 0, order);
         return heap;
     }
