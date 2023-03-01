@@ -301,6 +301,12 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
          * cannot fail.
          */
         T[] heap = (T[]) (new Object[q.length()]);
+        int length = q.length();
+        for (int i = 0; i < length; i++) {
+            heap[i] = q.dequeue();
+        }
+        heapify(heap, 0, order);
+        return heap;
 
         // TODO - fill in rest of body
 
