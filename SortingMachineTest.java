@@ -10,7 +10,7 @@ import components.sortingmachine.SortingMachine;
  * JUnit test fixture for {@code SortingMachine<String>}'s constructor and
  * kernel methods.
  *
- * @author Put your name here
+ * @author Adithya and Majed
  *
  */
 public abstract class SortingMachineTest {
@@ -121,6 +121,9 @@ public abstract class SortingMachineTest {
      * Sample test cases.
      */
 
+    /**
+     * Test constructor.
+     */
     @Test
     public final void testConstructor() {
         SortingMachine<String> m = this.constructorTest(ORDER);
@@ -128,6 +131,9 @@ public abstract class SortingMachineTest {
         assertEquals(mExpected, m);
     }
 
+    /**
+     * Test add empty.
+     */
     @Test
     public final void testAddEmpty() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
@@ -139,8 +145,12 @@ public abstract class SortingMachineTest {
 
     // TODO - add test cases for add, changeToExtractionMode, removeFirst,
     // isInInsertionMode, order, and size
+
+    /**
+     * routin case for add.
+     */
     @Test
-    public final void add1() {
+    public final void add2() {
 
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
                 " red");
@@ -148,6 +158,18 @@ public abstract class SortingMachineTest {
                 "green", " red", "blue");
         m.add("blue");
 
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * routin case for add.
+     */
+    @Test
+    public final void testAdd3() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "Ohio");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "Texas", "Ohio");
+        m.add("Texas");
         assertEquals(mExpected, m);
     }
 
@@ -247,15 +269,6 @@ public abstract class SortingMachineTest {
         int size = m.size();
 
         assertEquals(2, size);
-        assertEquals(mExpected, m);
-    }
-
-    @Test
-    public final void testAdd2() {
-        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "Ohio");
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
-                "Texas", "Ohio");
-        m.add("Texas");
         assertEquals(mExpected, m);
     }
 
