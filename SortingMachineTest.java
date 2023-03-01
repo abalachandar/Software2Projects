@@ -246,4 +246,38 @@ public abstract class SortingMachineTest {
 
         assertEquals(mExpected, m);
     }
+     @Test
+    public final void testAdd2() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "Ohio");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
+                "Texas", "Ohio");
+        m.add("Texas");
+        assertEquals(mExpected, m);
+    }
+
+    @Test
+    public final void testChangeToExtractionMode1() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+        m.changeToExtractionMode();
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+        assertEquals(mExpected, m);
+    }
+
+    @Test
+    public final void testChangeToExtractionMode2() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "Ohio");
+        m.changeToExtractionMode();
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+        assertEquals(mExpected, m);
+    }
+
+    @Test
+    public final void testChangeToExtractionMode3() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "Ohio",
+                "Florida", "Texas");
+        m.changeToExtractionMode();
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+        assertEquals(mExpected, m);
+    }
+
 }
