@@ -176,12 +176,13 @@ public class List3<T> extends ListSecondary<T> {
      */
     private void createNewRep() {
 
-        // TODO - fill in body
-
+        //intializes values to 0
         this.rightLength = 0;
         this.leftLength = 0;
+        //intialize pre and post values of diuble linked list
         this.preStart = new Node();
         this.postFinish = new Node();
+        //values point to each other since there are no values inbetween yet
         this.preStart.next = this.postFinish;
         this.postFinish.previous = this.preStart;
         this.lastLeft = this.preStart;
@@ -193,7 +194,6 @@ public class List3<T> extends ListSecondary<T> {
      */
     public List3() {
 
-        // TODO - fill in body
         this.createNewRep();
         assert this.conventionHolds();
     }
@@ -239,14 +239,15 @@ public class List3<T> extends ListSecondary<T> {
     public final void addRightFront(T x) {
         assert x != null : "Violation of: x is not null";
 
-        // TODO - fill in body
-
+        //increases rightLenght
         this.rightLength++;
         Node temp = new Node();
+        //new node points to the most left value
         temp.next = this.lastLeft.next;
         this.lastLeft.next = temp;
         temp.next.previous = temp;
         temp.previous = this.lastLeft;
+        //adds value to new assigned position
         temp.data = x;
         assert this.conventionHolds();
     }
@@ -255,11 +256,12 @@ public class List3<T> extends ListSecondary<T> {
     public final T removeRightFront() {
         assert this.rightLength() > 0 : "Violation of: this.right /= <>";
 
-        // TODO - fill in body
-
+        //decreases leftLength by 1
         this.rightLength--;
         Node front = this.lastLeft.next;
+        //gets value to remove
         T x = front.data;
+        //moves pointers so they don't point at empty values
         front.next.previous = this.lastLeft;
         this.lastLeft.next = front.next;
         assert this.conventionHolds();
@@ -270,10 +272,10 @@ public class List3<T> extends ListSecondary<T> {
     public final void advance() {
         assert this.rightLength() > 0 : "Violation of: this.right /= <>";
 
-        // TODO - fill in body
-
+        //increase the position to the left while decreases the position to the right
         this.leftLength++;
         this.rightLength--;
+        //points to next value
         this.lastLeft = this.lastLeft.next;
 
         assert this.conventionHolds();
@@ -282,10 +284,11 @@ public class List3<T> extends ListSecondary<T> {
     @Override
     public final void moveToStart() {
 
-        // TODO - fill in body
-
+        //moves all values to rightLenght
         this.rightLength = this.rightLength + this.leftLength;
+        //clears leftLength
         this.leftLength = 0;
+        //points to pre start value
         this.lastLeft = this.preStart;
 
         assert this.conventionHolds();
@@ -294,8 +297,7 @@ public class List3<T> extends ListSecondary<T> {
     @Override
     public final int leftLength() {
 
-        // TODO - fill in body
-
+        //returns leftLenght
         assert this.conventionHolds();
         return this.leftLength;
     }
@@ -303,8 +305,7 @@ public class List3<T> extends ListSecondary<T> {
     @Override
     public final int rightLength() {
 
-        // TODO - fill in body
-
+        //returns rightLenght
         assert this.conventionHolds();
         return this.rightLength;
     }
@@ -370,12 +371,12 @@ public class List3<T> extends ListSecondary<T> {
     @Override
     public final void moveToFinish() {
 
-        // TODO - fill in body
-
+        //moves all values to the leftLength
         this.leftLength = this.leftLength + this.rightLength;
+        //sets rightLenght to 0 making sure all the values have left
         this.rightLength = 0;
+        //points to the end of the list
         this.lastLeft = this.postFinish.previous;
-
         assert this.conventionHolds();
     }
 
@@ -383,10 +384,10 @@ public class List3<T> extends ListSecondary<T> {
     public final void retreat() {
         assert this.leftLength() > 0 : "Violation of: this.left /= <>";
 
-        // TODO - fill in body
-
+        //by going back words you increase the right by 1 and decrease the left by 1
         this.leftLength--;
         this.rightLength++;
+        //points to the previous value
         this.lastLeft = this.lastLeft.previous;
 
         assert this.conventionHolds();
