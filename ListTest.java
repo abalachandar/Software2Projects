@@ -7,7 +7,7 @@ import components.list.List;
 /**
  * JUnit test fixture for {@code List<String>}'s constructor and kernel methods.
  *
- * @author Put your name here
+ * @author Adithya and Majed
  *
  */
 public abstract class ListTest {
@@ -753,6 +753,76 @@ public abstract class ListTest {
         assertEquals(list2, list1);
     }
 
-    // TODO - add test cases for retreat
+    @Test
+    public final void TestRetreat1() {
+        /*
+         * Set up variables
+         */
+        List<String> list1 = this.createFromArgsTest(1, "red");
+        List<String> list2 = this.createFromArgsRef(0, "red");
+        /*
+         * Evaluate the correctness of the result
+         */
+        list1.retreat();
+        /*
+         * Evaluate the correctness of the result
+         */
+        assertEquals(list2, list1);
+    }
 
+    // TODO - add test cases for retreat
+    @Test
+    public final void TestRetreat2() {
+        /*
+         * Set up variables
+         */
+        List<String> list1 = this.createFromArgsTest(4, "yellow", "Orange",
+                "green", "purple");
+        List<String> list2 = this.createFromArgsRef(3, "yellow", "Orange",
+                "green", "purple");
+        /*
+         * Evaluate the correctness of the result
+         */
+        list1.retreat();
+        /*
+         * Evaluate the correctness of the result
+         */
+        assertEquals(list2, list1);
+    }
+
+    @Test
+    public final void TestRetreat3() {
+        /*
+         * Set up variables
+         */
+        List<String> list1 = this.createFromArgsTest(1, "green", "red", "blue");
+        List<String> list2 = this.createFromArgsRef(0, "green", "red", "blue");
+        /*
+         * Evaluate the correctness of the result
+         */
+        list1.retreat();
+        /*
+         * Evaluate the correctness of the result
+         */
+        assertEquals(list2, list1);
+    }
+
+    @Test
+    public final void TestRetreat4() {
+        /*
+         * Set up variables
+         */
+        List<String> list1 = this.createFromArgsTest(3, "yellow", "Orange",
+                "green", "purple");
+        List<String> list2 = this.createFromArgsRef(2, "yellow", "Orange",
+                "green", "purple");
+        /*
+         * Evaluate the correctness of the result
+         */
+        list1.retreat();
+        /*
+         * Evaluate the correctness of the result
+         */
+        assertEquals(list2, list1);
+    }
 }
