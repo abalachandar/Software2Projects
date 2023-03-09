@@ -7,7 +7,7 @@ import components.list.List;
 /**
  * JUnit test fixture for {@code List<String>}'s constructor and kernel methods.
  *
- * @author Adithya and Majed
+ * @author Put your name here
  *
  */
 public abstract class ListTest {
@@ -753,6 +753,9 @@ public abstract class ListTest {
         assertEquals(list2, list1);
     }
 
+    /*
+     * Test retreat Left one and right empty
+     */
     @Test
     public final void TestRetreat1() {
         /*
@@ -770,7 +773,9 @@ public abstract class ListTest {
         assertEquals(list2, list1);
     }
 
-    // TODO - add test cases for retreat
+    /*
+     * Test retreat Left non empty and right non empty
+     */
     @Test
     public final void TestRetreat2() {
         /*
@@ -790,6 +795,9 @@ public abstract class ListTest {
         assertEquals(list2, list1);
     }
 
+    /*
+     * Test retreat Left non empty and right empty
+     */
     @Test
     public final void TestRetreat3() {
         /*
@@ -807,6 +815,9 @@ public abstract class ListTest {
         assertEquals(list2, list1);
     }
 
+    /*
+     * Test retreat Left non empty and right non empty
+     */
     @Test
     public final void TestRetreat4() {
         /*
