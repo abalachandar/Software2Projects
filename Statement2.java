@@ -361,8 +361,12 @@ public class Statement2 extends StatementSecondary {
         assert Tokenizer.isIdentifier(inst) : ""
                 + "Violation of: inst is a valid IDENTIFIER";
 
-        // TODO - fill in body
-
+        
+        StatementLabel label = new StatementLabel(Kind.BLOCK, inst);
+        Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+        children.add(0, localS.rep);
+        this.rep.assemble(labelWhile, children);
+        localS.createNewRep(); // clears s
     }
 
     @Override
