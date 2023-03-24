@@ -200,7 +200,7 @@ public class Statement2 extends StatementSecondary {
         StatementLabel root = this.rep.disassemble(child);
         Statement2 x = (Statement2) s;
         child.add(pos, x.rep);
-        //x.createNewRep();
+        x.createNewRep();
         this.rep.assemble(root, child);
     }
 
