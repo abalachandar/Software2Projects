@@ -11,7 +11,7 @@ import components.utilities.Tokenizer;
 /**
  * JUnit test fixture for {@code Statement}'s constructor and kernel methods.
  *
- * @author Put your name here
+ * @author Adithya and Majed
  *
  */
 public abstract class StatementTest {
