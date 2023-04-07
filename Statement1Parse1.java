@@ -66,41 +66,37 @@ public final class Statement1Parse1 extends Statement1 {
 
         //If block
         tokens.dequeue();
-        Reporter.assertElseFatalError(
-                tokens.length() > 0 && Tokenizer.isCondition(tokens.front()),
+        Reporter.assertElseFatalError(Tokenizer.isCondition(tokens.front()),
                 "Condition Expected");
         Condition c = parseCondition(tokens.dequeue());
 
-        //then block
-        Reporter.assertElseFatalError(
-                tokens.length() > 0 && tokens.front().equals("THEN"),
+        //Then block
+        Reporter.assertElseFatalError(tokens.front().equals("THEN"),
                 "THEN Expected");
         tokens.dequeue();
         Statement ifBlock = s.newInstance();
-        Reporter.assertElseFatalError(tokens.length() > 0, "Error");
         ifBlock.parseBlock(tokens);
 
         Reporter.assertElseFatalError(
-                tokens.length() > 0 && (tokens.front().equals("ELSE")
-                        || tokens.front().equals("END")),
+                (tokens.front().equals("ELSE") || tokens.front().equals("END")),
                 "ELSE or END IF Expected");
 
+        //Else block
         if (tokens.front().equals("ELSE")) {
             tokens.dequeue();
             Statement elseBlock = s.newInstance();
-            Reporter.assertElseFatalError(tokens.length() > 0, "Error");
             elseBlock.parseBlock(tokens);
             Reporter.assertElseFatalError(
-                    tokens.length() > 1 && (tokens.dequeue().equals("END")
+                    (tokens.dequeue().equals("END")
                             && tokens.dequeue().equals("IF")),
                     "END IF Expected");
             s.assembleIfElse(c, ifBlock, elseBlock);
 
         } else {
             tokens.dequeue();
-            Reporter.assertElseFatalError(
-                    tokens.length() > 0 && tokens.dequeue().equals("IF"),
+            Reporter.assertElseFatalError(tokens.dequeue().equals("IF"),
                     "END IF Expected");
+            //build block together
             s.assembleIf(c, ifBlock);
         }
 
@@ -133,30 +129,23 @@ public final class Statement1Parse1 extends Statement1 {
         assert tokens.length() > 0 && tokens.front().equals("WHILE") : ""
                 + "Violation of: <\"WHILE\"> is proper prefix of tokens";
 
-        // TODO - fill in body
-
         //while condition
         tokens.dequeue();
-        Reporter.assertElseFatalError(
-                tokens.length() > 0 && Tokenizer.isCondition(tokens.front()),
+        Reporter.assertElseFatalError(Tokenizer.isCondition(tokens.front()),
                 "Expected condition");
         Condition c = parseCondition(tokens.dequeue());
 
         // DO Block
-        Reporter.assertElseFatalError(
-                tokens.length() > 0 && tokens.front().equals("DO"),
+        Reporter.assertElseFatalError(tokens.front().equals("DO"),
                 "DO Expected");
         tokens.dequeue();
         Statement whileBlock = s.newInstance();
-        Reporter.assertElseFatalError(tokens.length() > 0, "Unexpected ERROR");
         whileBlock.parseBlock(tokens);
 
-        //Closing syntax
-        Reporter.assertElseFatalError(
-                tokens.length() > 1 && (tokens.dequeue().equals("END")
-                        && tokens.dequeue().equals("WHILE")),
-                "WHILE Expected");
-        //build block
+        //Closing block checking syntax
+        Reporter.assertElseFatalError((tokens.dequeue().equals("END")
+                && tokens.dequeue().equals("WHILE")), "WHILE Expected");
+        //build block together
         s.assembleWhile(c, whileBlock);
 
     }
@@ -208,11 +197,14 @@ public final class Statement1Parse1 extends Statement1 {
         assert tokens.length() > 0 : ""
                 + "Violation of: Tokenizer.END_OF_INPUT is a suffix of tokens";
 
+        //checks front for IF, true parses it
         if (tokens.front().equals("IF")) {
             parseIf(tokens, this);
+            //checks front for WHILE, true parses it
         } else if (tokens.front().equals("WHILE")) {
             parseWhile(tokens, this);
         } else {
+            //Checks if front if not IF or WHILE parses CALL
             Reporter.assertElseFatalError(
                     Tokenizer.isIdentifier(tokens.front()),
                     "Statement Expected");
@@ -226,8 +218,10 @@ public final class Statement1Parse1 extends Statement1 {
         assert tokens.length() > 0 : ""
                 + "Violation of: Tokenizer.END_OF_INPUT is a suffix of tokens";
 
+        //tokenizer checks if there is a value at front and continues up
         for (int i = 0; Tokenizer.isIdentifier(tokens.front())
                 || tokens.front().equals("IF"); i++) {
+            //creates a new statement
             Statement add = this.newInstance();
             add.parse(tokens);
             this.addToBlock(i, add);
