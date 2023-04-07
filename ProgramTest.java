@@ -11,7 +11,7 @@ import components.utilities.Tokenizer;
 /**
  * JUnit test fixture for {@code Program}'s constructor and kernel methods.
  *
- * @author Stacey Frye and Andrew Cheng
+ * @author Adithya and Majed
  *
  */
 public abstract class ProgramTest {
@@ -96,7 +96,7 @@ public abstract class ProgramTest {
      * Test of parse on syntactically valid input.
      */
     @Test
-    public final void testParseValidExampleProgram3() {
+    public final void testParseValidExampleProgram2() {
         /*
          * Setup
          */
