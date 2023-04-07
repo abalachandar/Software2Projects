@@ -58,17 +58,18 @@ public final class Program1Parse1 extends Program1 {
         assert tokens.length() > 0 && tokens.front().equals("INSTRUCTION") : ""
                 + "Violation of: <\"INSTRUCTION\"> is proper prefix of tokens";
 
+        //starts by dequeueing
         tokens.dequeue();
         String indentifier = tokens.dequeue();
 
         Reporter.assertElseFatalError(Tokenizer.isIdentifier(indentifier),
                 "Instruction " + indentifier + "is invalid");
-
+        //checks for IS block
         Reporter.assertElseFatalError(tokens.dequeue().equals("IS"),
                 "IS Expected");
-
+        //parses Block
         body.parseBlock(tokens);
-
+        //checks of ending
         Reporter.assertElseFatalError(tokens.dequeue().equals("END"),
                 "END Expected");
         Reporter.assertElseFatalError(tokens.dequeue().equals(indentifier),
@@ -105,48 +106,56 @@ public final class Program1Parse1 extends Program1 {
         assert tokens.length() > 0 : ""
                 + "Violation of: Tokenizer.END_OF_INPUT is a suffix of tokens";
 
-         if (tokens.front().equals(Tokenizer.END_OF_INPUT)) {
-         this.clear();
-         } else {
-        Reporter.assertElseFatalError(tokens.dequeue().equals("PROGRAM"),
-                "PROGRAM Expected");
+        //clears token if only 1 item in 
+        if (tokens.front().equals(Tokenizer.END_OF_INPUT)) {
+            this.clear();
+        } else {
+            Reporter.assertElseFatalError(tokens.dequeue().equals("PROGRAM"),
+                    "PROGRAM Expected");
 
-        Reporter.assertElseFatalError(Tokenizer.isIdentifier(tokens.front()),
-                "Name must be an indentifier");
-        String newName = tokens.dequeue();
-        Reporter.assertElseFatalError(tokens.front().equals("IS"),
-                "must begin with IS");
-        tokens.dequeue();
+            Reporter.assertElseFatalError(
+                    Tokenizer.isIdentifier(tokens.front()),
+                    "Name must be an indentifier");
+            //String dequeue
+            String newName = tokens.dequeue();
+            Reporter.assertElseFatalError(tokens.front().equals("IS"),
+                    "must begin with IS");
+            tokens.dequeue();
 
-        Reporter.assertElseFatalError(tokens.length() > 0, "Unexpected ERROR");
+            Reporter.assertElseFatalError(tokens.length() > 0,
+                    "Unexpected ERROR");
 
-        Map<String, Statement> newContext = this.newContext();
-        while (tokens.front().equals("INSTRUCTION")) {
-            Statement block = this.newBody();
-            String indentifier = parseInstruction(tokens, block);
-            Reporter.assertElseFatalError(!newContext.hasKey(indentifier),
-                    "User defined instructions names must be a unique Identifier");
-            newContext.add(indentifier, block);
+            // creating new map to swap from
+            Map<String, Statement> newContext = this.newContext();
+            while (tokens.front().equals("INSTRUCTION")) {
+                Statement block = this.newBody();
+                String indentifier = parseInstruction(tokens, block);
+                Reporter.assertElseFatalError(!newContext.hasKey(indentifier),
+                        "User defined instructions names must be a unique Identifier");
+                //adds new context
+                newContext.add(indentifier, block);
+            }
+            Reporter.assertElseFatalError(tokens.dequeue().equals("BEGIN"),
+                    "BEGIN Expected");
+            Statement newBody = this.newBody();
+            //Parses block for new body
+            newBody.parseBlock(tokens);
+
+            Reporter.assertElseFatalError(tokens.dequeue().equals("END"),
+                    "Expected END");
+            Reporter.assertElseFatalError(tokens.dequeue().equals(newName),
+                    newName + " Expected");
+
+            Reporter.assertElseFatalError(
+                    tokens.front().equals(Tokenizer.END_OF_INPUT),
+                    "ERROR Expected");
+
+            //puts together by swapping context, body and adding name
+            this.setName(newName);
+            this.swapContext(newContext);
+            this.swapBody(newBody);
+
         }
-        Reporter.assertElseFatalError(tokens.dequeue().equals("BEGIN"),
-                "BEGIN Expected");
-        Statement newBody = this.newBody();
-        newBody.parseBlock(tokens);
-
-        Reporter.assertElseFatalError(tokens.dequeue().equals("END"),
-                "Expected END");
-        Reporter.assertElseFatalError(tokens.dequeue().equals(newName),
-                newName + " Expected");
-
-        Reporter.assertElseFatalError(
-                tokens.front().equals(Tokenizer.END_OF_INPUT),
-                "ERROR Expected");
-
-        this.setName(newName);
-        this.swapContext(newContext);
-        this.swapBody(newBody);
-
-    }
     }
     //}
 
