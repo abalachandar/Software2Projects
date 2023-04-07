@@ -29,9 +29,7 @@ public abstract class ProgramTest {
      * and returns the result.
      *
      * @return the new program
-     * @ensures <pre>
-     * {@code constructorTest = ("Unnamed", {}, compose((BLOCK, ?, ?), <>))}
-     * </pre>
+     * @ensures constructorTest = ("Unnamed", {}, compose((BLOCK, ?, ?), <>))
      */
     protected abstract Program constructorTest();
 
@@ -40,9 +38,7 @@ public abstract class ProgramTest {
      * and returns the result.
      *
      * @return the new program
-     * @ensures <pre>
-     * {@code constructorRef = ("Unnamed", {}, compose((BLOCK, ?, ?), <>))}
-     * </pre>
+     * @ensures constructorRef = ("Unnamed", {}, compose((BLOCK, ?, ?), <>))
      */
     protected abstract Program constructorRef();
 
@@ -50,7 +46,7 @@ public abstract class ProgramTest {
      * Test of parse on syntactically valid input.
      */
     @Test
-    public final void testParseValidExampleProgram1() {
+    public final void testParseValidExample() {
         /*
          * Setup
          */
@@ -76,7 +72,7 @@ public abstract class ProgramTest {
      * Test of parse on syntactically invalid input.
      */
     @Test(expected = RuntimeException.class)
-    public final void testParseErrorExampleProgram2() {
+    public final void testParseErrorExample() {
         /*
          * Setup
          */
@@ -92,11 +88,12 @@ public abstract class ProgramTest {
 
     // TODO - add more test cases for valid inputs
     // TODO - add more test cases for as many distinct syntax errors as possible
+
     /**
      * Test of parse on syntactically valid input.
      */
     @Test
-    public final void testParseValidExampleProgram2() {
+    public final void testParseValidExample2() {
         /*
          * Setup
          */
@@ -122,7 +119,7 @@ public abstract class ProgramTest {
      * Test of parse on syntactically invalid input.
      */
     @Test(expected = RuntimeException.class)
-    public final void testParseErrorExampleProgram4() {
+    public final void testParseErrorExample2() {
         /*
          * Setup
          */
@@ -140,7 +137,7 @@ public abstract class ProgramTest {
      * Test of parse on syntactically invalid input.
      */
     @Test(expected = RuntimeException.class)
-    public final void testParseErrorExampleProgram5() {
+    public final void testParseErrorExample3() {
         /*
          * Setup
          */
@@ -158,7 +155,7 @@ public abstract class ProgramTest {
      * Test of parse on syntactically invalid input.
      */
     @Test(expected = RuntimeException.class)
-    public final void testParseErrorExampleProgram6() {
+    public final void testParseErrorExample4() {
         /*
          * Setup
          */
@@ -171,4 +168,5 @@ public abstract class ProgramTest {
          */
         pTest.parse(tokens);
     }
+
 }
