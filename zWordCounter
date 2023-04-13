@@ -1,0 +1,227 @@
+import java.util.Comparator;
+
+import components.map.Map;
+import components.map.Map1L;
+import components.queue.Queue;
+import components.queue.Queue1L;
+import components.set.Set;
+import components.set.Set1L;
+import components.simplereader.SimpleReader;
+import components.simplereader.SimpleReader1L;
+import components.simplewriter.SimpleWriter;
+import components.simplewriter.SimpleWriter1L;
+
+/**
+ * Counts the number of occurences of each word in a text inputted by the user.
+ *
+ * @author Adithya Balachandar
+ *
+ */
+public final class WordCounter {
+    /**
+     * Private constructor so this utility class cannot be instantiated.
+     */
+    private WordCounter() {
+
+    }
+
+    /**
+     * Creates the table of words and its occurences on an HTML page.
+     *
+     * @param outputFile
+     *            the output file that the table is put on and shown to the
+     *            user.
+     * @param inputTitle
+     *            the title of the input file
+     * @param table
+     *            the {@code Map} that's being printed out in a table
+     * @param words
+     *            the individual words contained in table
+     */
+    private static void generateTable(String outputFile, String inputTitle,
+            Map<String, Integer> table, Queue<String> words) {
+        SimpleWriter out = new SimpleWriter1L(outputFile);
+        //Creates a table
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>Words Counted in " + inputTitle + "</title>");
+        out.println("<body>");
+        out.println("<h1>Words Counted in " + inputTitle + "</h1>");
+        out.println("<hr />");
+        out.println("<table>");
+        out.println("<tr>");
+        out.println("<th>Words</th>");
+        out.println("<th>Counts</th>");
+        out.println("</tr>");
+        //prints each word and number of occurences
+        for (String x : words) {
+            out.println("<tr>");
+            out.println("<td>" + x + "</td>");
+            out.println("<td>" + table.value(x) + "</td>");
+            out.println("</tr>");
+        }
+        out.println("</table>");
+        out.println("</body>");
+        out.println("</html>");
+
+        out.close();
+    }
+
+    /**
+     * Counts the number of occurences of each word in the inputted text.
+     *
+     * @param input
+     *            the text file inputted by the user
+     * @param table
+     *            the {@code Map} that pairs the word with its number of
+     *            occurences
+     */
+    public static void wordCounter(SimpleReader input,
+            Map<String, Integer> table) {
+        //initializes seperators that may interfere with word count putting them
+        //into a set
+        final String seperators = " /n,.!?-@#$%^&*()_:'";
+        Set<Character> seperatorSet = new Set1L<>();
+        for (int i = 0; i < seperators.length(); i++) {
+            seperatorSet.add(seperators.charAt(i));
+        }
+        //iterates through each individual line of the inputted text
+        while (!input.atEOS()) {
+            String line = input.nextLine();
+            int i = 0;
+            while (i < line.length()) {
+                //initializes word to either a string or seperator
+                String word = nextWordOrSeparator(line, i, seperatorSet);
+                //if word is already a key, its value increases, if not a key
+                //is created for it
+                if (table.hasKey(word)) {
+                    table.replaceValue(word, table.value(word) + 1);
+                } else if (!seperatorSet.contains(word.charAt(0))) {
+                    table.add(word, 1);
+                }
+                //moves position
+                i += word.length();
+            }
+
+        }
+    }
+
+    /**
+     *
+     * Creates a comparator.
+     *
+     */
+    private static class StringComp implements Comparator<String> {
+        @Override
+        public int compare(String s1, String s2) {
+            return s1.compareToIgnoreCase(s2);
+        }
+    }
+
+    /**
+     * Returns the first "word" (maximal length string of characters not in
+     * {@code separators}) or "separator string" (maximal length string of
+     * characters in {@code separators}) in the given {@code text} starting at
+     * the given {@code position}.
+     *
+     * @param text
+     *            the {@code String} from which to get the word or separator
+     *            string
+     * @param position
+     *            the starting index
+     * @param separators
+     *            the {@code Set} of separator characters
+     * @return the first word or separator string found in {@code text} starting
+     *         at index {@code position}
+     * @requires 0 <= position < |text|
+     * @ensures <pre>
+     * nextWordOrSeparator =
+     *   text[position, position + |nextWordOrSeparator|)  and
+     * if entries(text[position, position + 1)) intersection separators = {}
+     * then
+     *   entries(nextWordOrSeparator) intersection separators = {}  and
+     *   (position + |nextWordOrSeparator| = |text|  or
+     *    entries(text[position, position + |nextWordOrSeparator| + 1))
+     *      intersection separators /= {})
+     * else
+     *   entries(nextWordOrSeparator) is subset of separators  and
+     *   (position + |nextWordOrSeparator| = |text|  or
+     *    entries(text[position, position + |nextWordOrSeparator| + 1))
+     *      is not subset of separators)
+     * </pre>
+     */
+    private static String nextWordOrSeparator(String text, int position,
+            Set<Character> separators) {
+        assert text != null : "Violation of: text is not null";
+        assert separators != null : "Violation of: separators is not null";
+        assert 0 <= position : "Violation of: 0 <= position";
+        assert position < text.length() : "Violation of: position < |text|";
+
+        String result = "";
+        char character = text.charAt(position);
+
+        if (separators.contains(character)) {
+            while (separators.contains(text.charAt(position))) {
+                character = text.charAt(position);
+                result = result + character;
+            }
+        } else {
+            while (!separators.contains(text.charAt(position))) {
+                character = text.charAt(position);
+                result = result + character;
+            }
+        }
+        return result.toString();
+
+    }
+
+    /**
+     * organizes a given map in alphabetical order.
+     *
+     * @param table
+     *            words in inputted text along with each number of occurences.
+     * @return organized {@code Queue} in alphabetical order.
+     */
+    private static Queue<String> sort(Map<String, Integer> table) {
+        //initializes final queue
+        Queue<String> result = new Queue1L<>();
+        //inputs each word into queue
+        for (Map.Pair<String, Integer> x : table) {
+            result.enqueue(x.key());
+        }
+        //creates new comparator and organizes in alphabetical order
+        Comparator<String> alphabetize = new StringComp();
+        result.sort(alphabetize);
+        return result;
+    }
+
+    /**
+     * Main method.
+     *
+     * @param args
+     *            the command line arguments; unused here
+     */
+    public static void main(String[] args) {
+        SimpleReader in = new SimpleReader1L();
+        SimpleWriter out = new SimpleWriter1L();
+        //asks for user input file and output file name
+        out.println("Input a file");
+        String input = in.nextLine();
+        out.println("Enter the name of an output file");
+        String output = in.nextLine();
+
+        //creates a map for word and its number of occurences
+        Map<String, Integer> table = new Map1L<>();
+
+        //calls upon method to get final result
+        SimpleReader inputFile = new SimpleReader1L(input);
+        wordCounter(inputFile, table);
+        Queue<String> orderedTable = sort(table);
+        generateTable(output, input, table, orderedTable);
+        //closes streams
+        in.close();
+        out.close();
+
+    }
+
+}
