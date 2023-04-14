@@ -75,39 +75,39 @@ public final class TagCloudGenerator {
      *            the individual words contained in table
      *
      */
-    private static void generateTable(SimpleWriter outputFile,
-            SimpleReader inputTitle, int numbers,
-            Map<Pair<String, Integer>, Integer> countTable,
+    private static void generateTable(String outputFile, String inputTitle,
+            int numbers, Map<String, Integer> countTable,
             SortingMachine<Pair<String, Integer>> sortTable) {
 
-        SimpleWriter out = new SimpleWriter1L();
+        SimpleWriter out = new SimpleWriter1L(outputFile);
 
         //Creates WebPage
         out.println("<html>");
-        out.println("<head>");
-        out.println("<title> Top " + numbers + " Words in " + inputTitle
+        out.println("<head> ");
+        out.println("<title>Top " + numbers + " Words in" + inputTitle
                 + "</title>");
-        out.println("<link href =" + "" + "doc/tagcloud.html" + "" + "rel=" + ""
-                + "stylesheet" + "" + "type=" + "" + "text/html" + "" + ">");
+        out.println("<link href=" + "" + "doc/tagcloud.css" + "" + "rel=" + ""
+                + "stylesheet" + "" + "type=" + "" + "text/css" + "" + ">");
+
         //makes header
         out.println("</head>");
         out.println("<body>");
-        out.println(
-                "<h2> Top " + numbers + " Words in " + inputTitle + "</h2>");
+        out.println("<h2>Top " + numbers + " Words in " + inputTitle + "</h2>");
         out.println("<hr/>");
-        out.println("<div class = \"cdiv\">");
-        out.println("<p class =" + "" + "cbox" + "" + ">");
+        out.println("<div class=\"cdiv\">");
+        out.println("<p class=" + "" + "cbox" + "" + ">");
         sortTable.changeToExtractionMode();
-        //out.println("<th>Words</th>");
 
+        //HTML for sorted words
         while (sortTable.size() > 0) {
             Pair<String, Integer> sort = sortTable.removeFirst();
             out.println("<span style=" + "" + "cursor:default" + "" + " class="
-                    + "" + "f" + countTable.value(sort).toString() + ""
-                    + " title=" + "" + "count:" + sort.value() + "" + ">"
-                    + sort.key() + "</span>");
+                    + "" + "f" + sort.value().toString() + "" + " title=" + ""
+                    + " count:" + sort.value() + "" + ">" + sort.key()
+                    + "</span>");
         }
 
+        //closing html out
         out.println("</p>");
         out.println("</div>");
         out.println("</body>");
@@ -128,7 +128,7 @@ public final class TagCloudGenerator {
             Map<String, Integer> table) {
         //initializes seperators that may interfere with word count putting them
         //into a set
-        final String seperators = " /n,.!?-@#$%^&*()_:'";
+        final String seperators = " /n,.!?-@#$%^&*()_:'[]";
         Set<Character> seperatorSet = new Set1L<>();
         for (int i = 0; i < seperators.length(); i++) {
             seperatorSet.add(seperators.charAt(i));
@@ -195,20 +195,18 @@ public final class TagCloudGenerator {
 
         String result = "";
         char character = text.charAt(position);
-
+        int i = position;
         if (separators.contains(character)) {
-            while (position < text.length()
-                    && separators.contains(text.charAt(position))) {
-                character = text.charAt(position);
+            while (i < text.length() && separators.contains(text.charAt(i))) {
+                character = text.charAt(i);
                 result += character;
-                position++;
+                i++;
             }
         } else {
-            while (position < text.length()
-                    && !separators.contains(text.charAt(position))) {
-                character = text.charAt(position);
+            while (i < text.length() && !separators.contains(text.charAt(i))) {
+                character = text.charAt(i);
                 result += character;
-                position++;
+                i++;
             }
         }
         return result;
@@ -241,14 +239,28 @@ public final class TagCloudGenerator {
                 wordComp);
 
         sortNum.changeToExtractionMode();
-        for (Map.Pair<String, Integer> temp : words) {
-            sortWords.add(temp);
+        int sz = sortNum.size();
+        if (numWrds > sz) {
+            for (int i = 0; i < sz; i++) {
+                Map.Pair<String, Integer> temp = sortNum.removeFirst();
+                sortWords.add(temp);
+            }
+        } else {
+            for (int i = 0; i < numWrds; i++) {
+                Map.Pair<String, Integer> temp = sortNum.removeFirst();
+                sortWords.add(temp);
+            }
         }
+//        for (int i = 0; i < Math.min(numWrds, sz); i++) {
+//            Map.Pair<String, Integer> temp = sortNum.removeFirst();
+//            sortWords.add(temp);
+//        }
         //creates new comparator and organizes in alphabetical order
         //Comparator<Pair<String, Integer>> alphabetize = new alphabetizeComp();
         // for (Map.Pair<String, Integer> x : n) {
         // sortWords.add(x);
         return sortWords;
+
     }
 
     /**
@@ -269,16 +281,15 @@ public final class TagCloudGenerator {
         int wordsNum = in.nextInteger();
 
         //creates a map for word and its number of occurences
-        Map<Pair<String, Integer>, Integer> table = new Map1L<>();
-        Map<String, Integer> table2 = new Map1L<>();
-        SortingMachine sortTable = new SortingMachine1L<String>(null);
-        sort(table2, wordsNum);
-        //calls upon method to get final result
+        //Map<Pair<String, Integer>, Integer> table = new Map1L<>();
+        Map<String, Integer> table = new Map1L<>();
         SimpleReader inputFile = new SimpleReader1L(input);
+        wordCounter(inputFile, table);
+        SortingMachine<Pair<String, Integer>> sorted = sort(table, wordsNum);
+        //calls upon method to get final result
         SimpleWriter outputFile = new SimpleWriter1L(output);
 
-        wordCounter(inputFile, table2);
-        generateTable(outputFile, inputFile, wordsNum, table, sortTable);
+        generateTable(output, input, wordsNum, table, sorted);
         //closes streams
         in.close();
         out.close();
