@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.Comparator;
 
 import components.map.Map;
@@ -31,8 +32,8 @@ public final class TagCloudGenerator {
      * Creates a comparator.
      *
      */
-    private static class countComp
-            implements Comparator<Map.Pair<String, Integer>> {
+    private static class Count
+            implements Comparator<Map.Pair<String, Integer>>, Serializable {
         @Override
         public int compare(Map.Pair<String, Integer> pair1,
                 Map.Pair<String, Integer> pair2) {
@@ -42,8 +43,13 @@ public final class TagCloudGenerator {
         private static final long serialVersionUID = 1L;
     }
 
-    private static class alphabetizeComp
-            implements Comparator<Map.Pair<String, Integer>> {
+    /**
+     *
+     * Creates a comparator.
+     *
+     */
+    private static class Alphabetize
+            implements Comparator<Map.Pair<String, Integer>>, Serializable {
         @Override
         public int compare(Map.Pair<String, Integer> pair1,
                 Map.Pair<String, Integer> pair2) {
@@ -63,40 +69,43 @@ public final class TagCloudGenerator {
      *            the title of the input file
      * @param numbers
      *            number of words in the Tag generator
-     * @param table
+     * @param countTable
      *            the {@code Map} that's being printed out in a table
-     * @param words
+     * @param sortTable
      *            the individual words contained in table
      *
      */
-    private static void generateTable(String outputFile, String inputTitle,
-            int numbers, Map<Pair<String, Integer>, Integer> counttable,
+    private static void generateTable(SimpleWriter outputFile,
+            SimpleReader inputTitle, int numbers,
+            Map<Pair<String, Integer>, Integer> countTable,
             SortingMachine<Pair<String, Integer>> sortTable) {
-        SimpleWriter out = new SimpleWriter1L(outputFile);
-        //Creates a table
+
+        SimpleWriter out = new SimpleWriter1L();
+
+        //Creates WebPage
         out.println("<html>");
         out.println("<head>");
-        out.println("<title> Top " + numbers + "Words in " + inputTitle
+        out.println("<title> Top " + numbers + " Words in " + inputTitle
                 + "</title>");
-        out.println("<link href =" + "" + "doc/tagcloud.css" + "" + "rel=" + ""
-                + "stylesheet" + "" + "type=" + "" + "text/css" + "" + ">");
+        out.println("<link href =" + "" + "doc/tagcloud.html" + "" + "rel=" + ""
+                + "stylesheet" + "" + "type=" + "" + "text/html" + "" + ">");
+        //makes header
         out.println("</head>");
-
         out.println("<body>");
-        out.println("<title> Top " + numbers + "Words in " + inputTitle
-                + "</title>");
-        out.println("<hr />");
+        out.println(
+                "<h2> Top " + numbers + " Words in " + inputTitle + "</h2>");
+        out.println("<hr/>");
         out.println("<div class = \"cdiv\">");
-        out.println("<p class = " + "" + "cbox" + "" + ">");
+        out.println("<p class =" + "" + "cbox" + "" + ">");
         sortTable.changeToExtractionMode();
-        out.println("<th>Words</th>");
+        //out.println("<th>Words</th>");
 
         while (sortTable.size() > 0) {
             Pair<String, Integer> sort = sortTable.removeFirst();
-            out.println("<span style=" + "" + "cursor;default" + "" + "class="
-                    + "" + "f" + counttable.value(sort).toString() + ""
-                    + "title=" + "" + sort.value() + "" + ">" + sort.key()
-                    + "</span>");
+            out.println("<span style=" + "" + "cursor:default" + "" + " class="
+                    + "" + "f" + countTable.value(sort).toString() + ""
+                    + " title=" + "" + "count:" + sort.value() + "" + ">"
+                    + sort.key() + "</span>");
         }
 
         out.println("</p>");
@@ -188,50 +197,58 @@ public final class TagCloudGenerator {
         char character = text.charAt(position);
 
         if (separators.contains(character)) {
-            while (separators.contains(text.charAt(position))) {
+            while (position < text.length()
+                    && separators.contains(text.charAt(position))) {
                 character = text.charAt(position);
-                result = result + character;
+                result += character;
+                position++;
             }
         } else {
-            while (!separators.contains(text.charAt(position))) {
+            while (position < text.length()
+                    && !separators.contains(text.charAt(position))) {
                 character = text.charAt(position);
-                result = result + character;
+                result += character;
+                position++;
             }
         }
-        return result.toString();
+        return result;
     }
 
     /**
      * organizes a given map in alphabetical order.
      *
-     * @param table
+     * @param words
      *            words in inputted text along with each number of occurences.
+     * @param numWrds
      * @return organized {@code Queue} in alphabetical order.
      */
-    private static void Sort(String in, String out, int numWrds) {
-        SimpleReader inFile = new SimpleReader1L(in);
-        SimpleWriter outFile = new SimpleWriter1L(out);
+    private static SortingMachine<Pair<String, Integer>> sort(
+            Map<String, Integer> words, int numWrds) {
 
-        Map<String, Integer> n = new Map1L<String, Integer>();
-        wordCounter(inFile, n);
+        //  Map<String, Integer> n = new Map1L<String, Integer>();
+        // wordCounter(inFile, n);
 
-        Comparator<Map.Pair<String, Integer>> countComp = new countComp();
+        Comparator<Map.Pair<String, Integer>> countComp = new Count();
         SortingMachine<Map.Pair<String, Integer>> sortNum = new SortingMachine1L<>(
                 countComp);
 
         //inputs each word into queue
-        for (Map.Pair<String, Integer> temp : n) {
+        for (Map.Pair<String, Integer> temp : words) {
             sortNum.add(temp);
         }
-        Comparator<Map.Pair<String, Integer>> wordComp = new alphabetizeComp();
+        Comparator<Map.Pair<String, Integer>> wordComp = new Alphabetize();
         SortingMachine<Map.Pair<String, Integer>> sortWords = new SortingMachine1L<>(
                 wordComp);
 
+        sortNum.changeToExtractionMode();
+        for (Map.Pair<String, Integer> temp : words) {
+            sortWords.add(temp);
+        }
         //creates new comparator and organizes in alphabetical order
         //Comparator<Pair<String, Integer>> alphabetize = new alphabetizeComp();
         // for (Map.Pair<String, Integer> x : n) {
         // sortWords.add(x);
-
+        return sortWords;
     }
 
     /**
@@ -250,19 +267,23 @@ public final class TagCloudGenerator {
         String output = in.nextLine();
         out.println("Enter a number of words to be included");
         int wordsNum = in.nextInteger();
+
         //creates a map for word and its number of occurences
         Map<Pair<String, Integer>, Integer> table = new Map1L<>();
         Map<String, Integer> table2 = new Map1L<>();
         SortingMachine sortTable = new SortingMachine1L<String>(null);
-        Sort(input, output, wordsNum);
+        sort(table2, wordsNum);
         //calls upon method to get final result
         SimpleReader inputFile = new SimpleReader1L(input);
+        SimpleWriter outputFile = new SimpleWriter1L(output);
+
         wordCounter(inputFile, table2);
-        generateTable(output, input, wordsNum, table, sortTable);
+        generateTable(outputFile, inputFile, wordsNum, table, sortTable);
         //closes streams
         in.close();
         out.close();
-
+        inputFile.close();
+        outputFile.close();
     }
-
+//data/importance.txt
 }
