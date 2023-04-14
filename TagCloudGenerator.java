@@ -1,0 +1,268 @@
+import java.util.Comparator;
+
+import components.map.Map;
+import components.map.Map.Pair;
+import components.map.Map1L;
+import components.set.Set;
+import components.set.Set1L;
+import components.simplereader.SimpleReader;
+import components.simplereader.SimpleReader1L;
+import components.simplewriter.SimpleWriter;
+import components.simplewriter.SimpleWriter1L;
+import components.sortingmachine.SortingMachine;
+import components.sortingmachine.SortingMachine1L;
+
+/**
+ * Generates tag cloud from a given input text
+ *
+ * @author Adithya Balachandar and Majed Ahmad
+ *
+ */
+public final class TagCloudGenerator {
+    /**
+     * Private constructor so this utility class cannot be instantiated.
+     */
+    private TagCloudGenerator() {
+
+    }
+
+    /**
+     *
+     * Creates a comparator.
+     *
+     */
+    private static class countComp
+            implements Comparator<Map.Pair<String, Integer>> {
+        @Override
+        public int compare(Map.Pair<String, Integer> pair1,
+                Map.Pair<String, Integer> pair2) {
+            return pair2.value().compareTo(pair1.value());
+        }
+
+        private static final long serialVersionUID = 1L;
+    }
+
+    private static class alphabetizeComp
+            implements Comparator<Map.Pair<String, Integer>> {
+        @Override
+        public int compare(Map.Pair<String, Integer> pair1,
+                Map.Pair<String, Integer> pair2) {
+            return pair2.key().compareTo(pair1.key());
+        }
+
+        private static final long serialVersionUID = 1L;
+    }
+
+    /**
+     * Creates the table of words and its occurences on an HTML page.
+     *
+     * @param outputFile
+     *            the output file that the table is put on and shown to the
+     *            user.
+     * @param inputTitle
+     *            the title of the input file
+     * @param numbers
+     *            number of words in the Tag generator
+     * @param table
+     *            the {@code Map} that's being printed out in a table
+     * @param words
+     *            the individual words contained in table
+     *
+     */
+    private static void generateTable(String outputFile, String inputTitle,
+            int numbers, Map<Pair<String, Integer>, Integer> counttable,
+            SortingMachine<Pair<String, Integer>> sortTable) {
+        SimpleWriter out = new SimpleWriter1L(outputFile);
+        //Creates a table
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title> Top " + numbers + "Words in " + inputTitle
+                + "</title>");
+        out.println("<link href =" + "" + "doc/tagcloud.css" + "" + "rel=" + ""
+                + "stylesheet" + "" + "type=" + "" + "text/css" + "" + ">");
+        out.println("</head>");
+
+        out.println("<body>");
+        out.println("<title> Top " + numbers + "Words in " + inputTitle
+                + "</title>");
+        out.println("<hr />");
+        out.println("<div class = \"cdiv\">");
+        out.println("<p class = " + "" + "cbox" + "" + ">");
+        sortTable.changeToExtractionMode();
+        out.println("<th>Words</th>");
+
+        while (sortTable.size() > 0) {
+            Pair<String, Integer> sort = sortTable.removeFirst();
+            out.println("<span style=" + "" + "cursor;default" + "" + "class="
+                    + "" + "f" + counttable.value(sort).toString() + ""
+                    + "title=" + "" + sort.value() + "" + ">" + sort.key()
+                    + "</span>");
+        }
+
+        out.println("</p>");
+        out.println("</div>");
+        out.println("</body>");
+        out.println("</html>");
+        out.close();
+    }
+
+    /**
+     * Counts the number of occurences of each word in the inputted text.
+     *
+     * @param input
+     *            the text file inputted by the user
+     * @param table
+     *            the {@code Map} that pairs the word with its number of
+     *            occurences
+     */
+    public static void wordCounter(SimpleReader input,
+            Map<String, Integer> table) {
+        //initializes seperators that may interfere with word count putting them
+        //into a set
+        final String seperators = " /n,.!?-@#$%^&*()_:'";
+        Set<Character> seperatorSet = new Set1L<>();
+        for (int i = 0; i < seperators.length(); i++) {
+            seperatorSet.add(seperators.charAt(i));
+        }
+        //iterates through each individual line of the inputted text
+        while (!input.atEOS()) {
+            String line = input.nextLine();
+            int i = 0;
+            while (i < line.length()) {
+                //initializes word to either a string or seperator
+                String word = nextWordOrSeparator(line, i, seperatorSet);
+                //if word is already a key, its value increases, if not a key
+                //is created for it
+                if (table.hasKey(word)) {
+                    table.replaceValue(word, table.value(word) + 1);
+                } else if (!seperatorSet.contains(word.charAt(0))) {
+                    table.add(word, 1);
+                }
+                //moves position
+                i += word.length();
+            }
+
+        }
+    }
+
+    /**
+     * Returns the first "word" (maximal length string of characters not in
+     * {@code separators}) or "separator string" (maximal length string of
+     * characters in {@code separators}) in the given {@code text} starting at
+     * the given {@code position}.
+     *
+     * @param text
+     *            the {@code String} from which to get the word or separator
+     *            string
+     * @param position
+     *            the starting index
+     * @param separators
+     *            the {@code Set} of separator characters
+     * @return the first word or separator string found in {@code text} starting
+     *         at index {@code position}
+     * @requires 0 <= position < |text|
+     * @ensures <pre>
+     * nextWordOrSeparator =
+     *   text[position, position + |nextWordOrSeparator|)  and
+     * if entries(text[position, position + 1)) intersection separators = {}
+     * then
+     *   entries(nextWordOrSeparator) intersection separators = {}  and
+     *   (position + |nextWordOrSeparator| = |text|  or
+     *    entries(text[position, position + |nextWordOrSeparator| + 1))
+     *      intersection separators /= {})
+     * else
+     *   entries(nextWordOrSeparator) is subset of separators  and
+     *   (position + |nextWordOrSeparator| = |text|  or
+     *    entries(text[position, position + |nextWordOrSeparator| + 1))
+     *      is not subset of separators)
+     * </pre>
+     */
+    private static String nextWordOrSeparator(String text, int position,
+            Set<Character> separators) {
+        assert text != null : "Violation of: text is not null";
+        assert separators != null : "Violation of: separators is not null";
+        assert 0 <= position : "Violation of: 0 <= position";
+        assert position < text.length() : "Violation of: position < |text|";
+
+        String result = "";
+        char character = text.charAt(position);
+
+        if (separators.contains(character)) {
+            while (separators.contains(text.charAt(position))) {
+                character = text.charAt(position);
+                result = result + character;
+            }
+        } else {
+            while (!separators.contains(text.charAt(position))) {
+                character = text.charAt(position);
+                result = result + character;
+            }
+        }
+        return result.toString();
+    }
+
+    /**
+     * organizes a given map in alphabetical order.
+     *
+     * @param table
+     *            words in inputted text along with each number of occurences.
+     * @return organized {@code Queue} in alphabetical order.
+     */
+    private static void Sort(String in, String out, int numWrds) {
+        SimpleReader inFile = new SimpleReader1L(in);
+        SimpleWriter outFile = new SimpleWriter1L(out);
+
+        Map<String, Integer> n = new Map1L<String, Integer>();
+        wordCounter(inFile, n);
+
+        Comparator<Map.Pair<String, Integer>> countComp = new countComp();
+        SortingMachine<Map.Pair<String, Integer>> sortNum = new SortingMachine1L<>(
+                countComp);
+
+        //inputs each word into queue
+        for (Map.Pair<String, Integer> temp : n) {
+            sortNum.add(temp);
+        }
+        Comparator<Map.Pair<String, Integer>> wordComp = new alphabetizeComp();
+        SortingMachine<Map.Pair<String, Integer>> sortWords = new SortingMachine1L<>(
+                wordComp);
+
+        //creates new comparator and organizes in alphabetical order
+        //Comparator<Pair<String, Integer>> alphabetize = new alphabetizeComp();
+        // for (Map.Pair<String, Integer> x : n) {
+        // sortWords.add(x);
+
+    }
+
+    /**
+     * Main method.
+     *
+     * @param args
+     *            the command line arguments; unused here
+     */
+    public static void main(String[] args) {
+        SimpleReader in = new SimpleReader1L();
+        SimpleWriter out = new SimpleWriter1L();
+        //asks for user input file and output file name
+        out.println("Input file name");
+        String input = in.nextLine();
+        out.println("Enter the name of an output file");
+        String output = in.nextLine();
+        out.println("Enter a number of words to be included");
+        int wordsNum = in.nextInteger();
+        //creates a map for word and its number of occurences
+        Map<Pair<String, Integer>, Integer> table = new Map1L<>();
+        Map<String, Integer> table2 = new Map1L<>();
+        SortingMachine sortTable = new SortingMachine1L<String>(null);
+        Sort(input, output, wordsNum);
+        //calls upon method to get final result
+        SimpleReader inputFile = new SimpleReader1L(input);
+        wordCounter(inputFile, table2);
+        generateTable(output, input, wordsNum, table, sortTable);
+        //closes streams
+        in.close();
+        out.close();
+
+    }
+
+}
