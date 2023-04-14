@@ -176,7 +176,6 @@ public final class WordCounter {
             }
         }
         return result;
-
     }
 
     /**
