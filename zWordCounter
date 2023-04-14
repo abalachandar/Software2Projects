@@ -76,7 +76,7 @@ public final class WordCounter {
      *            the {@code Map} that pairs the word with its number of
      *            occurences
      */
-    public static void wordCounter(SimpleReader input,
+    private static void wordCounter(SimpleReader input,
             Map<String, Integer> table) {
         //initializes seperators that may interfere with word count putting them
         //into a set
@@ -161,17 +161,21 @@ public final class WordCounter {
         char character = text.charAt(position);
 
         if (separators.contains(character)) {
-            while (separators.contains(text.charAt(position))) {
+            while (position < text.length()
+                    && separators.contains(text.charAt(position))) {
                 character = text.charAt(position);
-                result = result + character;
+                result += character;
+                position++;
             }
         } else {
-            while (!separators.contains(text.charAt(position))) {
+            while (position < text.length()
+                    && !separators.contains(text.charAt(position))) {
                 character = text.charAt(position);
-                result = result + character;
+                result += character;
+                position++;
             }
         }
-        return result.toString();
+        return result;
 
     }
 
