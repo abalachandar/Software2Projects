@@ -83,28 +83,30 @@ public final class TagCloudGenerator {
 
         //Creates WebPage
         out.println("<html>");
-        out.println("<head> ");
-        out.println("<title>Top " + numbers + " Words in" + inputTitle
+        out.println("<head>");
+        out.println("<title>Top " + numbers + " Words in " + inputTitle
                 + "</title>");
-        out.println("<link href=" + "" + "doc/tagcloud.css" + "" + "rel=" + ""
-                + "stylesheet" + "" + "type=" + "" + "text/css" + "" + ">");
+        out.println("<link href=\"http://web.cse.ohio-state.edu/software/2231"
+                + "/web-sw2/assignments/projects/tag-cloud-generation/data"
+                + "/tagcloud.css\" rel=\"stylesheet\" type=\"text/css\">");
+        out.println(
+                "<link href=\"doc/tagcloud.css\" rel=\"stylesheet\" type=\"text/css\">");
+        out.println("</head>");
 
         //makes header
-        out.println("</head>");
         out.println("<body>");
         out.println("<h2>Top " + numbers + " Words in " + inputTitle + "</h2>");
-        out.println("<hr/>");
+        out.println("<hr>");
         out.println("<div class=\"cdiv\">");
-        out.println("<p class=" + "" + "cbox" + "" + ">");
+        out.println("<p class=\"cbox\">");
         sortTable.changeToExtractionMode();
 
         //HTML for sorted words
         while (sortTable.size() > 0) {
             Pair<String, Integer> sort = sortTable.removeFirst();
-            out.println("<span style=" + "" + "cursor:default" + "" + " class="
-                    + "" + "f" + sort.value().toString() + "" + " title=" + ""
-                    + " count:" + sort.value() + "" + ">" + sort.key()
-                    + "</span>");
+            out.println("<span style=\"cursor:default\" class=\"" + "f"
+                    + sort.value().toString() + "\" title=\"count: "
+                    + sort.value() + "\">" + sort.key() + "</span>");
         }
 
         //closing html out
@@ -112,7 +114,7 @@ public final class TagCloudGenerator {
         out.println("</div>");
         out.println("</body>");
         out.println("</html>");
-        out.close();
+        // out.close();
     }
 
     /**
