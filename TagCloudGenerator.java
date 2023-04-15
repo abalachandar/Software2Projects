@@ -14,7 +14,7 @@ import components.sortingmachine.SortingMachine;
 import components.sortingmachine.SortingMachine1L;
 
 /**
- * Generates tag cloud from a given input text
+ * Generates tag cloud from a given input text.
  *
  * @author Adithya Balachandar and Majed Ahmad
  *
@@ -87,7 +87,7 @@ public final class TagCloudGenerator {
         out.println("<title>Top " + numbers + " Words in " + inputTitle
                 + "</title>");
         out.println("<link href=\"http://web.cse.ohio-state.edu/software/2231"
-                + "/web-sw2/assignments/projects/tag-cloud-generation/data"
+                + "/web-sw2/assignments/projects/tag-cloud-generation/doc"
                 + "/tagcloud.css\" rel=\"stylesheet\" type=\"text/css\">");
         out.println(
                 "<link href=\"doc/tagcloud.css\" rel=\"stylesheet\" type=\"text/css\">");
@@ -104,17 +104,25 @@ public final class TagCloudGenerator {
         //HTML for sorted words
         while (sortTable.size() > 0) {
             Pair<String, Integer> sort = sortTable.removeFirst();
-            out.println("<span style=\"cursor:default\" class=\"" + "f"
+            out.println("<span style=\"cursor:default\" class=\""
+                    + (((double) sort.value() - Integer.MAX_VALUE)
+                            / (Integer.MIN_VALUE - Integer.MAX_VALUE))
                     + sort.value().toString() + "\" title=\"count: "
                     + sort.value() + "\">" + sort.key() + "</span>");
         }
+//        while (sortTable.size() > 0) {
+//            Pair<String, Integer> sort = sortTable.removeFirst();
+//            out.println("<span style=\"cursor:default\" class=\"" + "f"
+//                    + sort.value().toString() + "\" title=\"count: "
+//                    + sort.value() + "\">" + sort.key() + "</span>");
+//        }
 
         //closing html out
         out.println("</p>");
         out.println("</div>");
         out.println("</body>");
         out.println("</html>");
-        // out.close();
+        out.close();
     }
 
     /**
