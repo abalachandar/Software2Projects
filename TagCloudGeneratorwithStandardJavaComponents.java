@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -29,16 +31,14 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      * Creates a alphabetical comparator.
      *
      */
-    private static abstract class Count
-            implements Comparator<Map.Entry<String, Integer>>, Serializable,
-            Entry<String, Integer> {
+    private static class Count
+            implements Comparator<Map.Entry<String, Integer>> {
         @Override
         public int compare(Map.Entry<String, Integer> pair1,
                 Map.Entry<String, Integer> pair2) {
             return pair1.getValue().compareTo(pair2.getValue());
         }
 
-        private static final long serialVersionUID = 1L;
     }
 
     /**
@@ -46,15 +46,14 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      * Creates a count comparator.
      *
      */
-    private static abstract class Alphabetize
-            implements Comparator<Map.Entry<String, Integer>>, Serializable {
+    private static class Alphabetize
+            implements Comparator<Map.Entry<String, Integer>> {
         @Override
         public int compare(Map.Entry<String, Integer> pair1,
                 Map.Entry<String, Integer> pair2) {
             return pair1.getKey().compareTo(pair2.getKey());
         }
 
-        private static final long serialVersionID = 1L;
     }
 
     /**
@@ -71,15 +70,16 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      *            the {@code Map} that's being printed out in a table
      * @param sort
      *            the individual words contained in table being sorted
-     *
+     * @param out
+     *            file being passed in
      */
     private static void generateTable(String outputFile, String inputTitle,
-            int numbers, Map<String, Integer> countTable, List sort) {
+            int numbers, Map<String, Integer> countTable,
+            List<Map.Entry<String, Integer>> sort, PrintWriter out) {
 
 //        int max = 48;
 //        int min = 11;
 
-        PrintWriter out = null;
         //Creates WebPage
         out.println("<html>");
         out.println("<head>");
@@ -102,17 +102,19 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         //HTML for sorted words
         int position = sort.size() - 1;
         while (sort.size() > 0) {
-            Entry<String, Integer> word = (Entry<String, Integer>) sort
-                    .remove(position);
+            //ASK ABOUT THIS
+            Entry<String, Integer> word = sort.remove(position);
             out.println("<span style=\"cursor:default\" class=\"" + "f"
                     + word.getValue().toString() + "\" title=\"count: "
                     + word.getValue() + "\">" + word.getKey() + "</span>");
+
+            position--;
 
 //          while (sortTable.size() > 0) {
 //              Pair<String, Integer> sort = sortTable.removeFirst();
 //              out.println("<span style=\"cursor:default\" class=\""
 //                      + (((double) sort.value() - Integer.MAX_VALUE)
-//                              / (Integer.MIN_VALUE - Integer.MAX_VALUE))
+//                              / (Integer.MIN_VALUE - Integer.MIN_VALUE))
 //                      + sort.value().toString() + "\" title=\"count: "
 //                      + sort.value() + "\">" + sort.key() + "</span>");
 //      }
@@ -133,9 +135,10 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      * @param table
      *            the {@code Map} that pairs the word with its number of
      *            occurences
+     * @throws IOException
      */
     public static void wordCounter(BufferedReader input,
-            Map<String, Integer> table) {
+            Map<String, Integer> table, PrintWriter out) {
 
         //initializes seperators that may interfere with word count putting them
         //into a set
@@ -146,9 +149,15 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         }
 
         //iterates through each individual line of the inputted text
-        while (!(input == null)) {
+        while (!(input.EOS())) {
 
-            String line = input.readLine();
+            //Ask ABOUT THIS
+            String line;
+            try {
+                line = input.readLine();
+            } catch (IOException e) {
+                System.err.println();    
+                }
 
             int i = 0;
             while (i < line.length()) {
@@ -164,7 +173,6 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
                 //moves position
                 i += word.length();
             }
-
         }
     }
 
@@ -261,6 +269,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
                 sortWords.add(temp);
             }
         }
+        //ASK ABOUT THIS
         Comparator<Map.Entry<String, Integer>> numComp = new Count();
         Comparator<Map.Entry<String, Integer>> wordComp = new Alphabetize();
         sortNum.sort(wordComp);
@@ -274,13 +283,14 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      *
      * @param args
      *            the command line arguments; unused here
+     * @throws IOException
      */
     public static void main(String[] args) {
 
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(System.in));
         BufferedReader inFile;
         PrintWriter out;
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(System.in));
 
         //asks for user input file and output file name
         args[0] = ("Input file name");
@@ -288,37 +298,74 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         try {
             input = in.readLine();
         } catch (IOException e) {
-
+            System.err.println("Error reading input" + e);
+            return;
         }
+
         args[1] = ("Enter the name of an output file");
         String output = "";
         try {
             output = in.readLine();
         } catch (IOException e) {
-
+            System.err.println("Error opening in file to out file" + e);
+            return;
         }
         args[2] = ("Enter a number of words to be included");
         int wordsNum = 0;
+
         try {
             wordsNum = Integer.parseInt(in.readLine());
         } catch (IOException e) {
+            System.err.println("Incorrect format, error reading input" + e);
+            return;
+        }
 
+        try {
+            inFile = new BufferedReader(new FileReader(input));
+        } catch (IOException e) {
+            System.err.println("Error opening file");
+            return;
+        }
+        try {
+            out = new PrintWriter(new BufferedWriter(new FileWriter(output)));
+        } catch (IOException e) {
+            System.err.println("Error opening file");
+            try {
+                inFile.close();
+            } catch (IOException f) {
+                System.err.println("Error closing File");
+                return;
+            }
+            return;
         }
 
         //creates a map for word and its number of occurences
         Map<String, Integer> table = null;
         List sorted = sort(table, wordsNum);
-        BufferedReader inputFile = null;
-        wordCounter(inputFile, table);
+        // BufferedReader inputFile = null;
+
+        try {
+            wordCounter(inFile, table);
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
         sort(table, wordsNum);
         //calls upon method to get final result
 
-        generateTable(output, input, wordsNum, table, sorted);
+        generateTable(output, input, wordsNum, table, sorted, out);
 
+        //ASK ABOUT THIS
         //closes streams
-//        inFile.close();
-//        in.close();
-//        out.close();
+
+        try {
+            in.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        out.close();
     }
 //data/importance.txt
 }
