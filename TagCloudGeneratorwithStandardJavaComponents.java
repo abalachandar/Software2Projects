@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -28,13 +29,13 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      * Creates a alphabetical comparator.
      *
      */
-    private static class Count
+    private static abstract class Count
             implements Comparator<Map.Entry<String, Integer>>, Serializable,
             Entry<String, Integer> {
         @Override
         public int compare(Map.Entry<String, Integer> pair1,
                 Map.Entry<String, Integer> pair2) {
-            return pair2.getValue().compareTo(pair1.getValue());
+            return pair1.getValue().compareTo(pair2.getValue());
         }
 
         private static final long serialVersionUID = 1L;
@@ -45,15 +46,15 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      * Creates a count comparator.
      *
      */
-    private static class Alphabetize
+    private static abstract class Alphabetize
             implements Comparator<Map.Entry<String, Integer>>, Serializable {
         @Override
         public int compare(Map.Entry<String, Integer> pair1,
                 Map.Entry<String, Integer> pair2) {
-            return pair2.getKey().compareTo(pair1.getKey());
+            return pair1.getKey().compareTo(pair2.getKey());
         }
 
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionID = 1L;
     }
 
     /**
@@ -68,7 +69,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      *            number of words in the Tag generator
      * @param countTable
      *            the {@code Map} that's being printed out in a table
-     * @param sortTable
+     * @param sort
      *            the individual words contained in table being sorted
      *
      */
@@ -78,7 +79,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
 //        int max = 48;
 //        int min = 11;
 
-        PrintWriter out;
+        PrintWriter out = null;
         //Creates WebPage
         out.println("<html>");
         out.println("<head>");
@@ -101,7 +102,8 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         //HTML for sorted words
         int position = sort.size() - 1;
         while (sort.size() > 0) {
-            Entry<String, Integer> word = sort.remove(position);
+            Entry<String, Integer> word = (Entry<String, Integer>) sort
+                    .remove(position);
             out.println("<span style=\"cursor:default\" class=\"" + "f"
                     + word.getValue().toString() + "\" title=\"count: "
                     + word.getValue() + "\">" + word.getKey() + "</span>");
@@ -138,7 +140,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         //initializes seperators that may interfere with word count putting them
         //into a set
         final String seperators = " /n,.!?-@#$%^&*()_:'[]";
-        Set<Character> seperatorSet;
+        Set<Character> seperatorSet = null;
         for (int i = 0; i < seperators.length(); i++) {
             seperatorSet.add(seperators.charAt(i));
         }
@@ -146,7 +148,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         //iterates through each individual line of the inputted text
         while (!(input == null)) {
 
-            String line = input.nextLine();
+            String line = input.readLine();
 
             int i = 0;
             while (i < line.length()) {
@@ -232,34 +234,38 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      * @param numWrds
      * @return organized {@code Queue} in alphabetical order.
      */
-    private static List sort(
-            Map<String, Integer> words, int numWrds) {
+    private static List sort(Map<String, Integer> words, int numWrds) {
 
-//       Map.Entry<String, Integer> countComp = new Count();
+        List<Map.Entry<String, Integer>> sortNum = new ArrayList<>();
+        List<Map.Entry<String, Integer>> sortWord = new ArrayList<>();
 
-        List.sort(Comparator <Count>);
-        List.sort(Comparator < Alphabetize>);
         //inputs each word into queue
-        for (Map.Entry<String, Integer> temp : words) {
+        for (Map.Entry<String, Integer> temp : words.entrySet()) {
             sortNum.add(temp);
         }
-        Comparator<Map.Entry<String, Integer>> wordComp = new Alphabetize();
-        List sortWords;
+
+        //List.<Map.Entry<String, Integer>> wordComp = new Alphabetize();
+        List<Map.Entry<String, Integer>> sortWords = new ArrayList<>();
 
         int sz = sortNum.size();
         if (numWrds > sz) {
             for (int i = 0; i < sz; i++) {
 
-                Map.Entry<String, Integer> temp = sortNum.remove();
+                Map.Entry<String, Integer> temp = sortNum.remove(0);
                 sortWords.add(temp);
             }
         } else {
             for (int i = 0; i < numWrds; i++) {
-                Map.Entry<String, Integer> temp = sortNum.remove();
+                Map.Entry<String, Integer> temp = sortNum.remove(0);
 
                 sortWords.add(temp);
             }
         }
+        Comparator<Map.Entry<String, Integer>> numComp = new Count();
+        Comparator<Map.Entry<String, Integer>> wordComp = new Alphabetize();
+        sortNum.sort(wordComp);
+        sortWord.sort(numComp);
+
         return sortWords;
     }
 
@@ -306,13 +312,13 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         wordCounter(inputFile, table);
         sort(table, wordsNum);
         //calls upon method to get final result
-        PrintWriter outputFile;
 
         generateTable(output, input, wordsNum, table, sorted);
 
         //closes streams
-        inputFile.close();
-        outputFile.close();
+//        inFile.close();
+//        in.close();
+//        out.close();
     }
 //data/importance.txt
 }
