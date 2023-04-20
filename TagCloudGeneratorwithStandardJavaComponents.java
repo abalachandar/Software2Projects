@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -128,13 +129,14 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
     }
 
     /**
-     * Counts the number of occurences of each word in the inputted text.
+     * Counts the number of occurrences of each word in the inputed text.
      *
      * @param input
-     *            the text file inputted by the user
+     *            the text file inputed by the user
      * @param table
-     *            the {@code Map} that pairs the word with its number of
-     *            occurences
+     *            the {@code Map} that pairs the word with its number of Occurrences
+     * @param out
+     *            the output of the file
      * @throws IOException
      */
     public static void wordCounter(BufferedReader input,
@@ -148,16 +150,16 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
             seperatorSet.add(seperators.charAt(i));
         }
 
-        //iterates through each individual line of the inputted text
-        while (!(input.EOS())) {
+        //iterates through each individual line of the inputed text
 
-            //Ask ABOUT THIS
+        while (input.E) {
+
             String line;
             try {
                 line = input.readLine();
             } catch (IOException e) {
-                System.err.println();    
-                }
+                System.err.println();
+            }
 
             int i = 0;
             while (i < line.length()) {
@@ -252,7 +254,6 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
             sortNum.add(temp);
         }
 
-        //List.<Map.Entry<String, Integer>> wordComp = new Alphabetize();
         List<Map.Entry<String, Integer>> sortWords = new ArrayList<>();
 
         int sz = sortNum.size();
@@ -269,7 +270,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
                 sortWords.add(temp);
             }
         }
-        //ASK ABOUT THIS
+
         Comparator<Map.Entry<String, Integer>> numComp = new Count();
         Comparator<Map.Entry<String, Integer>> wordComp = new Alphabetize();
         sortNum.sort(wordComp);
@@ -324,6 +325,12 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
             inFile = new BufferedReader(new FileReader(input));
         } catch (IOException e) {
             System.err.println("Error opening file");
+//            try {
+//
+//            } catch (IOException f) {
+//                System.err.println("Error closing File");
+//                return;
+//            }
             return;
         }
         try {
@@ -331,7 +338,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         } catch (IOException e) {
             System.err.println("Error opening file");
             try {
-                inFile.close();
+                in.close();
             } catch (IOException f) {
                 System.err.println("Error closing File");
                 return;
@@ -341,30 +348,11 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
 
         //creates a map for word and its number of occurences
         Map<String, Integer> table = null;
-        List sorted = sort(table, wordsNum);
-        // BufferedReader inputFile = null;
-
-        try {
-            wordCounter(inFile, table);
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-
-        sort(table, wordsNum);
         //calls upon method to get final result
-
+        List sorted = sort(table, wordsNum);
+        wordCounter(inFile, table, out);
         generateTable(output, input, wordsNum, table, sorted, out);
 
-        //ASK ABOUT THIS
-        //closes streams
-
-        try {
-            in.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         out.close();
     }
 //data/importance.txt
