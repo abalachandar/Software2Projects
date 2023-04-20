@@ -28,7 +28,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      * Creates a alphabetical comparator.
      *
      */
-    private static abstract class Count
+    private static class Count
             implements Comparator<Map.Entry<String, Integer>>, Serializable,
             Entry<String, Integer> {
         @Override
@@ -235,10 +235,10 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
     private static List sort(
             Map<String, Integer> words, int numWrds) {
 
-       Map.Entry<String, Integer> countComp; //= new Count();
-       Map.Entry<String, Integer> sortNum = //new SortingMachine1L<>(
-   //                countComp);
+//       Map.Entry<String, Integer> countComp = new Count();
 
+        List.sort(Comparator <Count>);
+        List.sort(Comparator < Alphabetize>);
         //inputs each word into queue
         for (Map.Entry<String, Integer> temp : words) {
             sortNum.add(temp);
@@ -271,7 +271,8 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      */
     public static void main(String[] args) {
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(System.in));
         BufferedReader inFile;
         PrintWriter out;
 
@@ -280,33 +281,34 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         String input = "";
         try {
             input = in.readLine();
-        }catch(IOException e) {
+        } catch (IOException e) {
 
         }
         args[1] = ("Enter the name of an output file");
         String output = "";
         try {
             output = in.readLine();
-        }catch(IOException e) {
+        } catch (IOException e) {
 
         }
         args[2] = ("Enter a number of words to be included");
         int wordsNum = 0;
         try {
             wordsNum = Integer.parseInt(in.readLine());
-        }catch(IOException e){
+        } catch (IOException e) {
 
         }
 
         //creates a map for word and its number of occurences
-        Map<String, Integer> table;
-        BufferedReader inputFile;
+        Map<String, Integer> table = null;
+        List sorted = sort(table, wordsNum);
+        BufferedReader inputFile = null;
         wordCounter(inputFile, table);
         sort(table, wordsNum);
         //calls upon method to get final result
         PrintWriter outputFile;
 
-        generateTable(output, input, wordsNum, table,);
+        generateTable(output, input, wordsNum, table, sorted);
 
         //closes streams
         inputFile.close();
