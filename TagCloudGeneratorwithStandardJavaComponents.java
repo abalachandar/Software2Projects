@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -29,7 +28,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
 
     /**
      *
-     * Creates a alphabetical comparator.
+     * Creates a Count comparator.
      *
      */
     private static class Count
@@ -44,7 +43,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
 
     /**
      *
-     * Creates a count comparator.
+     * Creates a alphabetical comparator.
      *
      */
     private static class Alphabetize
@@ -134,7 +133,8 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      * @param input
      *            the text file inputed by the user
      * @param table
-     *            the {@code Map} that pairs the word with its number of Occurrences
+     *            the {@code Map} that pairs the word with its number of
+     *            Occurrences
      * @param out
      *            the output of the file
      * @throws IOException
@@ -142,23 +142,22 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
     public static void wordCounter(BufferedReader input,
             Map<String, Integer> table, PrintWriter out) {
 
-        //initializes seperators that may interfere with word count putting them
+        //initializes separators that may interfere with word count putting them
         //into a set
         final String seperators = " /n,.!?-@#$%^&*()_:'[]";
         Set<Character> seperatorSet = null;
         for (int i = 0; i < seperators.length(); i++) {
             seperatorSet.add(seperators.charAt(i));
         }
-
         //iterates through each individual line of the inputed text
 
-        while (input.E) {
+        while (input != null) {
 
-            String line;
+            String line = null;
             try {
                 line = input.readLine();
             } catch (IOException e) {
-                System.err.println();
+                System.err.println("End of Stream found");
             }
 
             int i = 0;
