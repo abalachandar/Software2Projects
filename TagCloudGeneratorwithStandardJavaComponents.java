@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -32,7 +33,12 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      *
      */
     private static class Count
-            implements Comparator<Map.Entry<String, Integer>> {
+            implements Comparator<Map.Entry<String, Integer>>, Serializable {
+        /**
+         *
+         */
+        private static final long serialVersionUID = 1L;
+
         @Override
         public int compare(Map.Entry<String, Integer> pair1,
                 Map.Entry<String, Integer> pair2) {
@@ -47,7 +53,12 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      *
      */
     private static class Alphabetize
-            implements Comparator<Map.Entry<String, Integer>> {
+            implements Comparator<Map.Entry<String, Integer>>, Serializable {
+        /**
+         *
+         */
+        private static final long serialVersionUID = 1L;
+
         @Override
         public int compare(Map.Entry<String, Integer> pair1,
                 Map.Entry<String, Integer> pair2) {
@@ -77,9 +88,6 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
             int numbers, Map<String, Integer> countTable,
             List<Map.Entry<String, Integer>> sort, PrintWriter out) {
 
-//        int max = 48;
-//        int min = 11;
-
         //Creates WebPage
         out.println("<html>");
         out.println("<head>");
@@ -100,24 +108,14 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         out.println("<p class=\"cbox\">");
 
         //HTML for sorted words
-        int position = sort.size() - 1;
+        int position = sort.size();
         while (sort.size() > 0) {
-            //ASK ABOUT THIS
             Entry<String, Integer> word = sort.remove(position);
             out.println("<span style=\"cursor:default\" class=\"" + "f"
                     + word.getValue().toString() + "\" title=\"count: "
                     + word.getValue() + "\">" + word.getKey() + "</span>");
 
             position--;
-
-//          while (sortTable.size() > 0) {
-//              Pair<String, Integer> sort = sortTable.removeFirst();
-//              out.println("<span style=\"cursor:default\" class=\""
-//                      + (((double) sort.value() - Integer.MAX_VALUE)
-//                              / (Integer.MIN_VALUE - Integer.MIN_VALUE))
-//                      + sort.value().toString() + "\" title=\"count: "
-//                      + sort.value() + "\">" + sort.key() + "</span>");
-//      }
         }
         //closing html out
         out.println("</p>");
@@ -145,14 +143,8 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         //initializes separators that may interfere with word count putting them
         //into a set
         final String seperators = " /n,.!?-@#$%^&*()_:'[]";
-        //Set<Character> seperatorSet = new AbstractSet<>();
-//        for (int i = 0; i < seperators.length(); i++) {
-//           // seperatorSet.add(seperators.charAt(i));
-//        }
-//        //iterates through each individual line of the inputed text
 
         while (input != null) {
-
             String line;
             try {
                 line = input.readLine();
@@ -169,7 +161,6 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
                     }
                     //moves position
                     i += word.length();
-
                 }
             } catch (IOException e) {
                 System.err.println("End of Stream found");
@@ -213,7 +204,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         assert 0 <= position : "Violation of: 0 <= position";
         assert position < text.length() : "Violation of: position < |text|";
 
-        final String seperators = " /n,.!?-@#$%^&*()_:'[]";
+        final String seperators = " /n,.!?-@#$%^&*()_:'[];";
 
         String result = "";
         char character = text.charAt(position);
@@ -248,14 +239,12 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
             int numWrds) {
 
         List<Map.Entry<String, Integer>> sortNum = new ArrayList<>();
-        // List<Map.Entry<String, Integer>> sortWord = new ArrayList<>();
         List<Map.Entry<String, Integer>> sortWords = new ArrayList<>();
 
         //inputs each word into queue
         for (Map.Entry<String, Integer> temp : words.entrySet()) {
             sortNum.add(temp);
         }
-
         int sz = sortNum.size();
         if (numWrds > sz) {
             for (int i = 0; i < sz; i++) {
