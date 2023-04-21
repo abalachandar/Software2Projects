@@ -67,19 +67,51 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
 
     }
 
+    /**
+     * @param count
+     *            takes in the value from the map
+     * @param maxValue
+     *            greatest font size
+     * @param minValue
+     * @return minimum font size @ return font size for given word
+     */
     private static String fontGenerator(int maxValue, int minValue, int count) {
 
         int font = 37;
         if (maxValue > minValue) {
             font *= (count - minValue);
             font /= (maxValue - minValue);
-            font /= (maxValue - minValue);
-            font /= (11);
-        }else {
-            font = 48;
+            font += (minValue);
+        } else {
+            font = maxValue;
         }
         return "f" + font;
     }
+
+    private static int MaxValue(Map<String, Integer> table) {
+
+        int maxValue = 0;
+        for (Integer x : table.values()) {
+            if (maxValue < x) {
+                maxValue = x;
+            }
+        }
+
+        return maxValue;
+
+    }
+
+    private static int minValue(Map<String, Integer> table, int maxValue) {
+
+        int minValue = maxValue;
+        for (Integer x : table.values()) {
+            if (minValue > x) {
+                minValue = x;
+            }
+        }
+        return minValue;
+    }
+
     /**
      * Creates the table of words and its occurences on an HTML page.
      *
@@ -101,9 +133,9 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
             int numbers, Map<String, Integer> countTable,
             List<Map.Entry<String, Integer>> sort, PrintWriter out) {
 
-        int min = 1;
-        int max = 1;
-        
+        int max = MaxValue(countTable);
+        int min = minValue(countTable, max);
+
         //Creates WebPage
         out.println("<html>");
         out.println("<head>");
@@ -126,12 +158,11 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         //HTML for sorted words
         int position = sort.size();
         while (sort.size() > 0) {
-            Entry<String, Integer> word = sort.remove(position);
+            Entry<String, Integer> word = sort.remove(position - 1);
             out.println("<span style=\"cursor:default\" class=\""
-                    + fontGenerator(min,max,word.getValue())
+                    + fontGenerator(max, min, word.getValue())
                     + "\" title=\"count: " + word.getValue() + "\">"
                     + word.getKey() + "</span>");
-
             position--;
         }
         //closing html out
@@ -161,8 +192,9 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         //into a set
         final String seperators = " /n,.!?-@#$%^&*()_:'[]";
 
-        while (input != null) {
-            String line;
+        String line = "";
+        while (line != null) {
+
             try {
                 line = input.readLine();
                 int i = 0;
@@ -221,7 +253,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         assert 0 <= position : "Violation of: 0 <= position";
         assert position < text.length() : "Violation of: position < |text|";
 
-        final String seperators = " /n,.!?-@#$%^&*()_:'[];";
+        final String seperators = ",.!?-@#$%^&*()_:'[]; ";
 
         String result = "";
         char character = text.charAt(position);
