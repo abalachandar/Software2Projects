@@ -67,6 +67,19 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
 
     }
 
+    private static Map<String, Integer> fontGenerator(
+            Map<String, Integer> map) {
+
+        Map<String, Integer> hash = new HashMap<>();
+
+        for (Map.Entry<String, Integer> s : map.entrySet()) {
+            int minInt = Integer.MIN_VALUE;
+            int maxInt = Integer.MAX_VALUE;
+            double factor = (((double) map.value(s)) - minInt)
+                    / (maxInt - minInt);
+        }
+    }
+
     /**
      * Creates the table of words and its occurences on an HTML page.
      *
@@ -111,9 +124,10 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         int position = sort.size();
         while (sort.size() > 0) {
             Entry<String, Integer> word = sort.remove(position);
-            out.println("<span style=\"cursor:default\" class=\"" + "f"
-                    + word.getValue().toString() + "\" title=\"count: "
-                    + word.getValue() + "\">" + word.getKey() + "</span>");
+            out.println("<span style=\"cursor:default\" class=\""
+                    + fontGenerator(countTable) + word.getValue().toString()
+                    + "\" title=\"count: " + word.getValue() + "\">"
+                    + word.getKey() + "</span>");
 
             position--;
         }
