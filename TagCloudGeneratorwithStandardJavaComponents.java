@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Generates tag cloud from a given input text
+ * Generates tag cloud from a given input text.
  *
  * @author Adithya Balachandar and Majed Ahmad
  *
@@ -189,8 +189,6 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      *            string
      * @param position
      *            the starting index
-     * @param separators
-     *            the {@code Set} of separator characters
      * @return the first word or separator string found in {@code text} starting
      *         at index {@code position}
      * @requires 0 <= position < |text|
@@ -242,20 +240,21 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      * organizes a given map in alphabetical order.
      *
      * @param words
-     *            words in inputted text along with each number of occurences.
+     *            words in inputed text along with each number of occurrences.
      * @param numWrds
      * @return organized {@code Queue} in alphabetical order.
      */
-    private static List sort(Map<String, Integer> words, int numWrds) {
+    private static List<Entry<String, Integer>> sort(Map<String, Integer> words,
+            int numWrds) {
 
         List<Map.Entry<String, Integer>> sortNum = new ArrayList<>();
-        List<Map.Entry<String, Integer>> sortWord = new ArrayList<>();
+        // List<Map.Entry<String, Integer>> sortWord = new ArrayList<>();
+        List<Map.Entry<String, Integer>> sortWords = new ArrayList<>();
 
         //inputs each word into queue
         for (Map.Entry<String, Integer> temp : words.entrySet()) {
             sortNum.add(temp);
         }
-        List<Map.Entry<String, Integer>> sortWords = new ArrayList<>();
 
         int sz = sortNum.size();
         if (numWrds > sz) {
@@ -275,7 +274,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         Comparator<Map.Entry<String, Integer>> numComp = new Count();
         Comparator<Map.Entry<String, Integer>> wordComp = new Alphabetize();
         sortNum.sort(wordComp);
-        sortWord.sort(numComp);
+        sortWords.sort(numComp);
 
         return sortWords;
     }
@@ -341,19 +340,20 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
             return;
         }
 
-        //creates a map for word and its number of occurences
+        //creates a map for word and its number of occurrences
         Map<String, Integer> table = new HashMap<>();
 
         //calls upon method to get final result
         wordCounter(inFile, table, out);
-        List sorted = sort(table, wordsNum);
+        List<Entry<String, Integer>> sorted = sort(table, wordsNum);
         generateTable(output, input, wordsNum, table, sorted, out);
 
         try {
-               } catch (IOException e) {
-                  System.err.println("Error closing File");
-                 return;
-                        }
+            in.close();
+        } catch (IOException e) {
+            System.err.println("Error closing file");
+            return;
+        }
         out.close();
     }
 //data/importance.txt
