@@ -7,10 +7,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * Generates tag cloud from a given input text
@@ -145,34 +145,35 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         //initializes separators that may interfere with word count putting them
         //into a set
         final String seperators = " /n,.!?-@#$%^&*()_:'[]";
-        Set<Character> seperatorSet = null;
-        for (int i = 0; i < seperators.length(); i++) {
-            seperatorSet.add(seperators.charAt(i));
-        }
-        //iterates through each individual line of the inputed text
+        //Set<Character> seperatorSet = new AbstractSet<>();
+//        for (int i = 0; i < seperators.length(); i++) {
+//           // seperatorSet.add(seperators.charAt(i));
+//        }
+//        //iterates through each individual line of the inputed text
 
         while (input != null) {
 
-            String line = null;
+            String line;
             try {
                 line = input.readLine();
+                int i = 0;
+                while (line != null && i < line.length()) {
+                    //initializes word to either a string or separator
+                    String word = nextWordOrSeparator(line, i);
+                    //if word is already a key, its value increases, if not a key
+                    //is created for it
+                    if (table.containsKey(word)) {
+                        table.replace(word, table.get(word) + 1);
+                    } else if (!(seperators.indexOf(word.charAt(0)) >= 0)) {
+                        table.put(word, 1);
+                    }
+                    //moves position
+                    i += word.length();
+
+                }
             } catch (IOException e) {
                 System.err.println("End of Stream found");
-            }
-
-            int i = 0;
-            while (i < line.length()) {
-                //initializes word to either a string or seperator
-                String word = nextWordOrSeparator(line, i, seperatorSet);
-                //if word is already a key, its value increases, if not a key
-                //is created for it
-                if (table.containsKey(word)) {
-                    table.replace(word, table.get(word) + 1);
-                } else if (!seperatorSet.contains(word.charAt(0))) {
-                    table.put(word, 1);
-                }
-                //moves position
-                i += word.length();
+                return;
             }
         }
     }
@@ -209,24 +210,26 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
      *      is not subset of separators)
      * </pre>
      */
-    private static String nextWordOrSeparator(String text, int position,
-            Set<Character> separators) {
+    private static String nextWordOrSeparator(String text, int position) {
         assert text != null : "Violation of: text is not null";
-        assert separators != null : "Violation of: separators is not null";
         assert 0 <= position : "Violation of: 0 <= position";
         assert position < text.length() : "Violation of: position < |text|";
+
+        final String seperators = " /n,.!?-@#$%^&*()_:'[]";
 
         String result = "";
         char character = text.charAt(position);
         int i = position;
-        if (separators.contains(character)) {
-            while (i < text.length() && separators.contains(text.charAt(i))) {
+        if (seperators.indexOf(character) >= 0) {
+            while (i < text.length()
+                    && seperators.indexOf(text.charAt(i)) >= 0) {
                 character = text.charAt(i);
                 result += character;
                 i++;
             }
         } else {
-            while (i < text.length() && !separators.contains(text.charAt(i))) {
+            while (i < text.length()
+                    && !(seperators.indexOf(text.charAt(i)) >= 0)) {
                 character = text.charAt(i);
                 result += character;
                 i++;
@@ -252,7 +255,6 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         for (Map.Entry<String, Integer> temp : words.entrySet()) {
             sortNum.add(temp);
         }
-
         List<Map.Entry<String, Integer>> sortWords = new ArrayList<>();
 
         int sz = sortNum.size();
@@ -293,7 +295,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
                 new InputStreamReader(System.in));
 
         //asks for user input file and output file name
-        args[0] = ("Input file name");
+        System.out.println("Input file name");
         String input = "";
         try {
             input = in.readLine();
@@ -302,7 +304,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
             return;
         }
 
-        args[1] = ("Enter the name of an output file");
+        System.out.println("Enter the name of an output file");
         String output = "";
         try {
             output = in.readLine();
@@ -310,7 +312,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
             System.err.println("Error opening in file to out file" + e);
             return;
         }
-        args[2] = ("Enter a number of words to be included");
+        System.out.println("Enter a number of words to be included");
         int wordsNum = 0;
 
         try {
@@ -324,12 +326,6 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
             inFile = new BufferedReader(new FileReader(input));
         } catch (IOException e) {
             System.err.println("Error opening file");
-//            try {
-//
-//            } catch (IOException f) {
-//                System.err.println("Error closing File");
-//                return;
-//            }
             return;
         }
         try {
@@ -337,7 +333,7 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         } catch (IOException e) {
             System.err.println("Error opening file");
             try {
-                in.close();
+                inFile.close();
             } catch (IOException f) {
                 System.err.println("Error closing File");
                 return;
@@ -346,12 +342,18 @@ public final class TagCloudGeneratorwithStandardJavaComponents {
         }
 
         //creates a map for word and its number of occurences
-        Map<String, Integer> table = null;
+        Map<String, Integer> table = new HashMap<>();
+
         //calls upon method to get final result
-        List sorted = sort(table, wordsNum);
         wordCounter(inFile, table, out);
+        List sorted = sort(table, wordsNum);
         generateTable(output, input, wordsNum, table, sorted, out);
 
+        try {
+               } catch (IOException e) {
+                  System.err.println("Error closing File");
+                 return;
+                        }
         out.close();
     }
 //data/importance.txt
